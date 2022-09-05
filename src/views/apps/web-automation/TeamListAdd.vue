@@ -268,7 +268,7 @@ export default {
 
     const onSubmit = () => {
       postRequest("/teamGroup/addMember",userData.value).then(() => {
-            emit('refetch-data')
+            emit('refresh-data')
             emit('update:is-add-member-sidebar-active', false)
           })
     }

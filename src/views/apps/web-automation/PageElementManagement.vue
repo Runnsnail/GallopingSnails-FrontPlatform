@@ -2,7 +2,7 @@
   <div>
     <team-list-add
         :is-add-member-sidebar-active.sync="isAddMemberSidebarActive"
-        @refetch-data="refetchData"
+        @refresh-data="refreshData"
       />
   <b-button
       variant="gradient-danger"
@@ -11,7 +11,7 @@
   >
     <feather-icon icon="UserPlusIcon"/>
   </b-button>
-  <b-row className="match-height">
+  <b-row className="match-height" v-if="isReloadData">
     <b-col
         lg="4"
         md="6"
@@ -37,10 +37,12 @@ export default {
     BCol,
     CardAdvanceAppDesign,
   },
+  inject:['reload'],
 
   data() {
     return {
       teamData: {},
+      isReloadData: true,
     }
   },
 
@@ -48,15 +50,28 @@ export default {
     const isAddMemberSidebarActive = ref(false)
     return{
       isAddMemberSidebarActive,
-      refetchData,
     }
   },
+
   created() {
     // data
     getNoParamRequest('/teamGroup/getTeam')
         .then(response => {
           this.teamData = response.data
         })
+  },
+
+  methods:{
+    refreshData(){
+     this.reloadPart()
+    },
+    reloadPart(){
+      this.isReloadData = false
+      this.$nextTick(() =>{
+        this.isReloadData = true
+      })
+    }
+
   },
 }
 </script>

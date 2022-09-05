@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"],
+            "@core/*": ["src/@core/*"],
+            "@template/*":["public/templates/html-customizer/vertical-menu-template-dark/*"]
+        }
+    }
+}

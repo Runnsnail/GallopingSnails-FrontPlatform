@@ -1,77 +1,77 @@
 <template>
-  <div>
-    <team-list-add
-        :is-add-member-sidebar-active.sync="isAddMemberSidebarActive"
-        @refresh-data="refreshData"
-      />
-  <b-button
-      variant="gradient-danger"
-      class="btn-icon rounded-circle"
-      @click="isAddMemberSidebarActive = true"
+  <form-wizard
+      ref="refFormWizard"
+      color="#7367F0"
+      :title="null"
+      :subtitle="null"
+      finish-button-text="Submit"
+      back-button-text="Previous"
+      hide-buttons
+      class="checkout-form-wizard steps-transparent"
   >
-    <feather-icon icon="UserPlusIcon"/>
-  </b-button>
-  <b-row className="match-height" v-if="isReloadData">
-    <b-col
-        lg="4"
-        md="6"
+    <!-- TeamGroup tab -->
+    <tab-content
+        title="TeamGroup"
+        icon="feather icon-shopping-cart"
     >
-      <card-advance-app-design v-for="item in teamData.items" :data='item'/>
-    </b-col>
-  </b-row>
-  </div>
+      <team-group @next-step="formWizardNextStep"  />
+    </tab-content>
+
+    <!-- ElementMangement -->
+    <tab-content
+        title="ElementMangement"
+        icon="feather icon-home"
+    >
+      <element-mangement @next-step="formWizardNextStep"/>
+    </tab-content>
+
+  </form-wizard>
 </template>
 
 <script>
-import {BRow, BCol} from 'bootstrap-vue'
-import CardAdvanceAppDesign from '../../card/card-advance/CardAdvanceAppDesign.vue'
-import {getNoParamRequest} from "@/libs/axios";
-import {ref} from "@vue/composition-api";
-import TeamListAdd from "@/views/apps/web-automation/TeamListAdd";
-
+import { FormWizard, TabContent } from 'vue-form-wizard'
+import { ref } from '@vue/composition-api'
+import ElementMangement from "@/views/apps/web-automation/ElementMangement";
+import TeamGroup from "@/views/apps/web-automation/TeamGroup";
 
 export default {
   components: {
-    TeamListAdd,
-    BRow,
-    BCol,
-    CardAdvanceAppDesign,
-  },
-  inject:['reload'],
 
-  data() {
-    return {
-      teamData: {},
-      isReloadData: true,
-    }
-  },
+    // 3rd Party
+    FormWizard,
+    TabContent,
 
+    // SFC
+    TeamGroup,
+    ElementMangement,
+  },
   setup() {
-    const isAddMemberSidebarActive = ref(false)
-    return{
-      isAddMemberSidebarActive,
-    }
-  },
-
-  created() {
-    // data
-    getNoParamRequest('/teamGroup/getTeam')
-        .then(response => {
-          this.teamData = response.data
-        })
-  },
-
-  methods:{
-    refreshData(){
-     this.reloadPart()
-    },
-    reloadPart(){
-      this.isReloadData = false
-      this.$nextTick(() =>{
-        this.isReloadData = true
-      })
+    const refFormWizard = ref(null)
+    const formWizardNextStep = () => {
+      refFormWizard.value.nextTab()
     }
 
+    return {
+      refFormWizard,
+      formWizardNextStep,
+
+    }
   },
 }
 </script>
+
+<style lang="scss">
+@import '/src/@core/scss/vue/libs/vue-wizard.scss';
+@import '/src/@core/scss/base/pages/app-ecommerce.scss';
+@import '~vue-form-wizard/dist/vue-form-wizard.min.css';
+</style>
+
+<style lang="scss" scoped>
+.checkout-form-wizard ::v-deep {
+  .wizard-tab-content {
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 0;
+  }
+}
+</style>

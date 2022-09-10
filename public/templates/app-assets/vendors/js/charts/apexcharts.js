@@ -3380,7 +3380,7 @@
   var DateTime =
   /*#__PURE__*/
   function () {
-    function DateTime(ctx) {
+    function DateTime() {
       _classCallCheck(this, DateTime);
 
       this.ctx = ctx;

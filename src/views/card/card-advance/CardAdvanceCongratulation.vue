@@ -25,10 +25,10 @@
       />
     </b-avatar>
     <h1 class="mb-1 mt-50 text-white">
-      Congratulations John,
+      Congratulations AdminPotal,
     </h1>
     <b-card-text class="m-auto w-75">
-      You have done <strong>57.6%</strong> more sales today. Check your new badge in your profile.
+      You have <strong>100%</strong>the highest pass rate of test cases today . Congratulations! Keep up your efforts!👍
     </b-card-text>
   </b-card>
 </template>
@@ -37,9 +37,11 @@
 import {
   BCard, BImg, BAvatar, BCardText,
 } from 'bootstrap-vue'
+import Image from "@/views/components/image/Image";
 
 export default {
   components: {
+    Image,
     BCard,
     BAvatar,
     BImg,

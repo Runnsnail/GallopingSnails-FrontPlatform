@@ -1024,6 +1024,11 @@
     .design-planning-wrapper .design-planning {
       background-color: $theme-dark-body-bg;
     }
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 25px 0 rgba($black, 0.25);
+    }
   }
 
   //--------------- Statistics Card ---------------

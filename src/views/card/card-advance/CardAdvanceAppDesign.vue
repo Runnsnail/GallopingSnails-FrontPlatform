@@ -1,13 +1,13 @@
 <template>
-  <b-card  v-if="data" class="card-app-design">
+  <b-card  v-for="item in teamData" v-if="item" class="card-app-design">
     <b-badge variant="light-primary">
-      {{ data.updateTime }}
+      {{ item.updateTime }}
     </b-badge>
     <b-card-title class="mt-1 mb-75">
-      {{ data.cardTitle }}
+      {{ item.cardTitle }}
     </b-card-title>
     <b-card-text class="font-small-2 mb-2">
-      {{ data.description }}
+      {{ item.description }}
     </b-card-text>
 
     <!-- design group -->
@@ -19,7 +19,7 @@
         variant="light-warning"
         class="mr-1"
       >
-        {{ data.responsibility }}
+        {{ item.responsibility }}
       </b-badge>
     </div>
     <div class="design-group">
@@ -84,6 +84,13 @@
     >
       Join Team
     </b-button>
+    <b-button
+        variant="primary"
+        block
+        @click="$emit('next-step')"
+    >
+      Enter Team
+    </b-button>
   </b-card>
 </template>
 
@@ -91,9 +98,8 @@
 import {
   BCard, BBadge, BCardTitle, BCardText, BAvatar, BButton,
 } from 'bootstrap-vue'
-import Ripple from 'vue-ripple-directive'
+import Ripple from 'vue-ripple-directive';
 import {putRequest} from "@/libs/axios";
-
 export default {
   components: {
     BCard,
@@ -107,14 +113,14 @@ export default {
     Ripple,
   },
   props: {
-    data: {
+    teamData: {
       type: Object,
       default: () => {},
     },
   },
   methods: {
     joinTeam(){
-      putRequest("/teamGroup/insertTeam",data.groupNum).then(() => {
+      putRequest("/teamGroup/insertTeam",item.groupNum).then(() => {
         this.$bvToast.toast('Congratulations: Join successfully', {
           title: `Variant  success`,
           variant: 'success',

@@ -39,23 +39,23 @@
             @reset.prevent="resetForm"
         >
 
-          <!-- Full Name -->
+          <!-- Card Title -->
           <validation-provider
               #default="validationContext"
-              name="Full Name"
+              name="Card Title"
               rules="required"
           >
             <b-form-group
-                label="Full Name"
-                label-for="full-name"
+                label="Card Title"
+                label-for="cardTitle"
             >
               <b-form-input
-                  id="full-name"
-                  v-model="userData.fullName"
+                  id="cardTitle"
+                  v-model="teamData.cardTitle"
                   autofocus
                   :state="getValidationState(validationContext)"
                   trim
-                  placeholder="John Doe"
+                  placeholder="App Team"
               />
 
               <b-form-invalid-feedback>
@@ -64,19 +64,19 @@
             </b-form-group>
           </validation-provider>
 
-          <!-- Username -->
+          <!-- Team Description -->
           <validation-provider
               #default="validationContext"
-              name="Username"
+              name="Team Description"
               rules="required|alpha-num"
           >
             <b-form-group
-                label="Username"
-                label-for="username"
+                label="Team Description"
+                label-for="teamDescription"
             >
               <b-form-input
-                  id="username"
-                  v-model="userData.username"
+                  id="teamDescription"
+                  v-model="teamData.teamDescription"
                   :state="getValidationState(validationContext)"
                   trim
               />
@@ -90,16 +90,16 @@
           <!-- Email -->
           <validation-provider
               #default="validationContext"
-              name="Email"
+              name="Team Mail"
               rules="required|email"
           >
             <b-form-group
-                label="Email"
-                label-for="email"
+                label="Team Mail"
+                label-for="teamMail"
             >
               <b-form-input
-                  id="email"
-                  v-model="userData.email"
+                  id="teamMail"
+                  v-model="teamData.teamMail"
                   :state="getValidationState(validationContext)"
                   trim
               />
@@ -110,19 +110,19 @@
             </b-form-group>
           </validation-provider>
 
-          <!-- Company -->
+          <!-- Team Responsibility -->
           <validation-provider
               #default="validationContext"
-              name="Contact"
+              name="Team Responsibility"
               rules="required"
           >
             <b-form-group
-                label="Contact"
-                label-for="contact"
+                label="Team Responsibility"
+                label-for="teamResponsibility"
             >
               <b-form-input
-                  id="contact"
-                  v-model="userData.contact"
+                  id="teamResponsibility"
+                  v-model="teamData.teamResponsibility"
                   :state="getValidationState(validationContext)"
                   trim
               />
@@ -133,24 +133,25 @@
             </b-form-group>
           </validation-provider>
 
-          <!-- Company -->
+          <!--Team Member -->
           <validation-provider
               #default="validationContext"
-              name="Company"
+              name="Team Member"
               rules="required"
           >
             <b-form-group
-                label="Company"
-                label-for="company"
+                label="Team Member"
+                label-for="teamMember"
             >
-              <b-form-input
-                  id="company"
-                  v-model="userData.company"
-                  :state="getValidationState(validationContext)"
-                  trim
+              <v-select
+                  input-id="teamMember"
+                  v-model="teamData.teamMember"
+                  :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                  multiple
+                  label="title"
+                  :options="teamMember"
               />
-
-              <b-form-invalid-feedback>
+              <b-form-invalid-feedback :state="getValidationState(validationContext)">
                 {{ validationContext.errors[0] }}
               </b-form-invalid-feedback>
             </b-form-group>
@@ -168,7 +169,7 @@
             >
               <b-form-input
                   id="teamName"
-                  v-model="userData.teamName"
+                  v-model="teamData.teamName"
                   :state="getValidationState(validationContext)"
                   trim
               />
@@ -208,9 +209,9 @@
 import {
   BSidebar, BForm, BFormGroup, BFormInput, BFormInvalidFeedback, BButton,
 } from 'bootstrap-vue'
-import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import { ref } from '@vue/composition-api'
-import { required, alphaNum, email } from '@validations'
+import {ValidationProvider, ValidationObserver} from 'vee-validate'
+import {ref} from '@vue/composition-api'
+import {required, alphaNum, email} from '@validations'
 import formValidation from '@core/comp-functions/forms/form-validation'
 import Ripple from 'vue-ripple-directive'
 import vSelect from 'vue-select'
@@ -251,28 +252,36 @@ export default {
       email,
     }
   },
-  setup(props, { emit }) {
+  setup(props, {emit}) {
     const blankUserData = {
-      fullName: '',
-      username: '',
-      email: '',
-      company: '',
       teamName: '',
-      contact: '',
+      cardTitle: '',
+      teamDescription: '',
+      teamResponsibility: '',
+      teamMember: null,
+      teamMail: '',
     }
 
-    const userData = ref(JSON.parse(JSON.stringify(blankUserData)))
+    const teamData = ref(JSON.parse(JSON.stringify(blankUserData)))
+    const teamMember = ref([])
     const resetuserData = () => {
-      userData.value = JSON.parse(JSON.stringify(blankUserData))
+      teamData.value = JSON.parse(JSON.stringify(blankUserData))
     }
 
     const onSubmit = () => {
-      postRequest("/teamGroup/addMember",userData.value).then(() => {
-            emit('refresh-data')
-            emit('update:is-add-member-sidebar-active', false)
-          })
+      postRequest("/teamGroup/addMember", teamData.value).then(() => {
+        emit('refresh-data')
+        emit('update:is-add-member-sidebar-active', false)
+      })
     }
-
+    const getTeamList = () => {
+      axios.get('/sysUser/getMembers')
+          .then(response => {
+             teamMember.value = response.data.data.teamMembers
+          })
+          .catch(error => reject(error))
+    }
+    getTeamList()
     const {
       refFormObserver,
       getValidationState,
@@ -280,18 +289,19 @@ export default {
     } = formValidation(resetuserData)
 
     return {
-      userData,
+      teamData,
       onSubmit,
       refFormObserver,
       getValidationState,
       resetForm,
+      teamMember,
     }
   },
 }
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/vue-select.scss';
+@import 'src/@core/scss/vue/libs/vue-select.scss';
 
 #add-team-member-sidebar {
   .vs__dropdown-menu {

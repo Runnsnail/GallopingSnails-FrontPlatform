@@ -98,7 +98,7 @@ import {
 import ECommerceCheckoutStepCartProducts from './ECommerceCheckoutStepCartProducts.vue'
 
 export default {
-  components: {
+   components: {
     // BSV
     BButton,
     BCard,

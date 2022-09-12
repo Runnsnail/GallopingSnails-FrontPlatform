@@ -135,7 +135,7 @@
           variant="light"
           class="btn-wishlist remove-wishlist"
           block
-          @click="joinTeam"
+          @click="joinTeam(item.teamMember)"
       >
         <feather-icon icon="AwardIcon"/>
         <span>Join Team</span>
@@ -164,7 +164,7 @@ import {
   BCard, BBadge, BCardTitle, BCardText, BAvatar, BButton,
 } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive';
-import {putRequest} from "@/libs/axios";
+import axiosIns, {putRequest} from "@/libs/axios";
 import CardAdvanceCongratulation from '../../card/card-advance/CardAdvanceCongratulation.vue'
 import CardAdvanceMedal from '../../card/card-advance/CardAdvanceMedal.vue'
 import CardAdvanceAppDesign from '../../card/card-advance/CardAdvanceAppDesign'
@@ -238,10 +238,9 @@ export default {
         this.isReloadData = true
       })
     },
-    joinTeam() {
-      const userData = JSON.parse(localStorage.getItem('userData'))
-      alert(userData.userInfo.username)
-      putRequest("/teamGroup/insertTeam", userData.userInfo.username).then(() => {
+    joinTeam(teamMember) {
+      const teamData ={memberCode:teamMember}
+      axiosIns.post("/sysUser/insertTeam", teamData).then(() => {
         this.$bvToast.toast('Congratulations: Join successfully', {
           title: `Variant  success`,
           variant: 'success',

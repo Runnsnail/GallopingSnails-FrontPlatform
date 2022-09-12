@@ -68,7 +68,7 @@
           <validation-provider
               #default="validationContext"
               name="Team Description"
-              rules="required|alpha-num"
+              rules="required"
           >
             <b-form-group
                 label="Team Description"
@@ -142,14 +142,15 @@
             <b-form-group
                 label="Team Member"
                 label-for="teamMember"
+                :state="getValidationState(validationContext)"
             >
               <v-select
                   input-id="teamMember"
                   v-model="teamData.teamMember"
                   :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                   multiple
-                  label="title"
-                  :options="teamMember"
+                  label="member"
+                  :options="teamMembers"
               />
               <b-form-invalid-feedback :state="getValidationState(validationContext)">
                 {{ validationContext.errors[0] }}
@@ -179,6 +180,7 @@
             </b-form-group>
           </validation-provider>
 
+
           <!-- Form Actions -->
           <div class="d-flex mt-2">
             <b-button
@@ -207,7 +209,7 @@
 
 <script>
 import {
-  BSidebar, BForm, BFormGroup, BFormInput, BFormInvalidFeedback, BButton,
+  BSidebar, BForm, BFormGroup, BFormInput, BFormInvalidFeedback, BButton, BCardText,
 } from 'bootstrap-vue'
 import {ValidationProvider, ValidationObserver} from 'vee-validate'
 import {ref} from '@vue/composition-api'
@@ -216,7 +218,7 @@ import formValidation from '@core/comp-functions/forms/form-validation'
 import Ripple from 'vue-ripple-directive'
 import vSelect from 'vue-select'
 import store from '@/store'
-import {postRequest} from "@/libs/axios";
+import axiosIns, {getNoParamRequest, postRequest} from "@/libs/axios";
 
 export default {
   components: {
@@ -226,6 +228,7 @@ export default {
     BFormInput,
     BFormInvalidFeedback,
     BButton,
+    BCardText,
     vSelect,
 
     // Form Validation
@@ -258,35 +261,51 @@ export default {
       cardTitle: '',
       teamDescription: '',
       teamResponsibility: '',
-      teamMember: null,
+      teamMember: '',
       teamMail: '',
     }
 
     const teamData = ref(JSON.parse(JSON.stringify(blankUserData)))
-    const teamMember = ref([])
+    const teamMembers = ref([])
     const resetuserData = () => {
       teamData.value = JSON.parse(JSON.stringify(blankUserData))
     }
 
     const onSubmit = () => {
-      postRequest("/teamGroup/addMember", teamData.value).then(() => {
+      axiosIns.post("/teamGroup/addTeam", teamData.value).then(response => {
+        this.$bvToast.toast('Congratulations: Add team successfully', {
+          title: `Variant  success`,
+          variant: 'success',
+          solid: false,
+          toaster: 'b-toaster-bottom-right',
+        })
         emit('refresh-data')
         emit('update:is-add-member-sidebar-active', false)
-      })
+      }), e => {
+        this.$bvToast.toast('Note: Add team failed', {
+          title: `Variant  fail`,
+          variant: 'danger',
+          solid: false,
+          toaster: 'b-toaster-bottom-right',
+        })
+      }
     }
+
     const getTeamList = () => {
-      axios.get('/sysUser/getMembers')
+      getNoParamRequest('/sysUser/getMembers')
           .then(response => {
-             teamMember.value = response.data.data.teamMembers
+            teamMembers.value = response.data.data
           })
           .catch(error => reject(error))
     }
     getTeamList()
+
     const {
       refFormObserver,
       getValidationState,
       resetForm,
     } = formValidation(resetuserData)
+
 
     return {
       teamData,
@@ -294,7 +313,7 @@ export default {
       refFormObserver,
       getValidationState,
       resetForm,
-      teamMember,
+      teamMembers,
     }
   },
 }

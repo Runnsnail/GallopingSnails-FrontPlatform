@@ -4,13 +4,13 @@
       COPYRIGHT  © {{ new Date().getFullYear() }}
       <b-link
         class="ml-25"
-        href="https://1.envato.market/pixinvent_portfolio"
+        href="https://github.com/Runnsnail"
         target="_blank"
-      >Pixinvent</b-link>
+      >GallopingSnails</b-link>
       <span class="d-none d-sm-inline-block">, All rights Reserved</span>
     </span>
 
-    <span class="float-md-right d-none d-md-block">Hand-crafted &amp; Made with
+    <span class="float-md-right d-none d-md-block">Abell-范志凯 &amp; 15827518430
       <feather-icon
         icon="HeartIcon"
         size="21"

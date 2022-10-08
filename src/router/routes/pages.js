@@ -255,6 +255,7 @@ export default [
       navActiveLink: 'pages-knowledge-base',
     },
   },
+
   {
     path: '/pages/pricing',
     name: 'pages-pricing',

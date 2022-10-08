@@ -5,38 +5,38 @@
         <div class="email-app-menu">
           <div class="form-group-compose text-center compose-btn">
             <b-button
-              v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-              variant="primary"
-              block
-              @click="$emit('update:shall-show-email-compose-modal', true); $emit('close-left-sidebar')"
+                v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+                variant="primary"
+                block
+                @click="$emit('update:shall-show-email-compose-modal', true); $emit('close-left-sidebar')"
             >
               Compose
             </b-button>
           </div>
           <vue-perfect-scrollbar
-            :settings="perfectScrollbarSettings"
-            class="sidebar-menu-list scroll-area"
+              :settings="perfectScrollbarSettings"
+              class="sidebar-menu-list scroll-area"
           >
             <!-- Filters -->
             <b-list-group class="list-group-messages">
               <b-list-group-item
-                v-for="filter in emailFilters"
-                :key="filter.title + $route.path"
-                :to="filter.route"
-                :active="isDynamicRouteActive(filter.route)"
-                @click="$emit('close-left-sidebar')"
+                  v-for="filter in emailFilters"
+                  :key="filter.title + $route.path"
+                  :to="filter.route"
+                  :active="isDynamicRouteActive(filter.route)"
+                  @click="$emit('close-left-sidebar')"
               >
                 <feather-icon
-                  :icon="filter.icon"
-                  size="18"
-                  class="mr-75"
+                    :icon="filter.icon"
+                    size="18"
+                    class="mr-75"
                 />
                 <span class="align-text-bottom line-height-1">{{ filter.title }}</span>
                 <b-badge
-                  v-if="emailsMeta[filter.title.toLowerCase()]"
-                  pill
-                  :variant="resolveFilterBadgeColor(filter.title)"
-                  class="float-right"
+                    v-if="emailsMeta[filter.title.toLowerCase()]"
+                    pill
+                    :variant="resolveFilterBadgeColor(filter.title)"
+                    class="float-right"
                 >
                   {{ emailsMeta[filter.title.toLowerCase()] }}
                 </b-badge>
@@ -50,15 +50,15 @@
 
             <b-list-group class="list-group-labels">
               <b-list-group-item
-                v-for="label in emailLabel"
-                :key="label.title + $route.path"
-                :to="label.route"
-                :active="isDynamicRouteActive(label.route)"
-                @click="$emit('close-left-sidebar')"
+                  v-for="label in emailLabel"
+                  :key="label.title + $route.path"
+                  :to="label.route"
+                  :active="isDynamicRouteActive(label.route)"
+                  @click="$emit('close-left-sidebar')"
               >
                 <span
-                  class="bullet bullet-sm mr-1"
-                  :class="`bullet-${label.color}`"
+                    class="bullet bullet-sm mr-1"
+                    :class="`bullet-${label.color}`"
                 />
                 <span>{{ label.title }}</span>
               </b-list-group-item>

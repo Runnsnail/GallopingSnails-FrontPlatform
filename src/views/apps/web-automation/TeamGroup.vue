@@ -41,16 +41,38 @@
       </b-col>
       <b-col
           v-for="item in teamData"
-          :key="item.id"
+          :key="item.teamId"
           lg="4"
           md="3"
       >
     <b-card
         class="card-app-design"
     >
-      <b-badge variant="light-primary">
-        {{ currentTime }}
-      </b-badge>
+      <div class="app-fixed-search d-flex align-items-center">
+        <b-badge variant="light-primary">
+          {{ currentTime }}
+        </b-badge>
+      <div class="dropdown">
+        <b-dropdown
+            variant="link"
+            no-caret
+            toggle-class="p-0 mr-1"
+            right
+        >
+          <template #button-content>
+            <feather-icon
+                icon="MoreVerticalIcon"
+                size="16"
+                class="align-middle text-body"
+            />
+          </template>
+          <b-dropdown-item @click="deleteTeam(item.teamId)">
+            Delete Team
+          </b-dropdown-item>
+        </b-dropdown>
+      </div>
+
+      </div>
       <b-card-title class="mt-1 mb-75">
         {{ item.cardTitle }}
       </b-card-title>
@@ -140,11 +162,12 @@
         <feather-icon icon="AwardIcon"/>
         <span>Join Team</span>
       </b-button>
+      <!--          @click="$emit('next-step')"-->
       <b-button
           variant="primary"
           class="btn-cart move-cart"
           block
-          @click="$emit('next-step')"
+          @click="jump(item.cardTitle)"
       >
         <feather-icon
             icon="BookmarkIcon"
@@ -159,9 +182,8 @@
 </template>
 
 <script>
-import {BRow, BCol} from 'bootstrap-vue'
 import {
-  BCard, BBadge, BCardTitle, BCardText, BAvatar, BButton,
+  BCard, BBadge, BCardTitle, BCardText, BAvatar, BButton, BRow, BCol, BLink, BImg, BDropdown, BDropdownItem
 } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive';
 import axiosIns, {putRequest} from "@/libs/axios";
@@ -173,6 +195,7 @@ import {ref} from "@vue/composition-api";
 import {getNoParamRequest} from "@/libs/axios";
 import store from "@/store";
 import moment from "moment";
+import bus from "@/views/apps/web-automation/bus";
 
 
 export default {
@@ -184,6 +207,10 @@ export default {
     BButton,
     BAvatar,
     BCardTitle,
+    BDropdown,
+    BDropdownItem,
+    BLink,
+    BImg,
     BCardText,
     CardAdvanceAppDesign,
     CardAdvanceCongratulation,
@@ -217,14 +244,19 @@ export default {
           .then(response => {
             // console.log(response)
             teamData.value = response.data.data.teamData
-            console.log(teamData)
           })
+    }
+    const deleteTeam = param =>{
+      store.dispatch('webAuto/removeGroupTeam',param).then(() => {
+        fetchGroupTeams()
+      })
     }
     fetchGroupTeams()
     return {
       isAddMemberSidebarActive,
       teamData,
-      currentTime
+      currentTime,
+      deleteTeam
     }
   },
 
@@ -238,6 +270,11 @@ export default {
         this.isReloadData = true
       })
     },
+    jump(cardTitle){
+      bus.$emit('teamCard',cardTitle)
+      this.$emit('next-step')
+    },
+
     joinTeam(teamMember) {
       const teamData ={memberCode:teamMember}
       axiosIns.post("/sysUser/insertTeam", teamData).then(() => {

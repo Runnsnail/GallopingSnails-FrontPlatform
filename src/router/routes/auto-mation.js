@@ -32,10 +32,24 @@ export default [
         component: () => import('@/views/apps/web-automation/PageElementManagement.vue'),
     },
     {
-        path: '/apps/web-automation',
+        path: '/apps/web-automation/:projectID',
         name: 'test-case-management',
-        component: () => import('@/views/apps/web-automation/WebTestCaseManagement.vue'),
+        component: () => import('@/views/apps/web-automation/web-test-case/WebTestCaseManagement.vue'),
+        meta: {
+            contentRenderer: 'sidebar-left',
+            contentClass: 'email-application',
+        },
     },
+    // {
+    //     path: '/apps/web-automation/:projectID',
+    //     name: 'test-case-management-projectId',
+    //     component: () => import('@/views/apps/web-automation/web-test-case/WebTestCaseManagement.vue'),
+    //     meta: {
+    //         contentRenderer: 'sidebar-left',
+    //         contentClass: 'email-application',
+    //         navActiveLink: 'test-case-management',
+    //     },
+    // },
     {
         path: '/apps/web-automation',
         name: 'web-page-execution',

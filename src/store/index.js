@@ -8,7 +8,9 @@ import appConfig from './app-config'
 import verticalMenu from './vertical-menu'
 import route from "./route";
 import webAuto from "./web-automation"
-
+import ProjectStoreModule from "@/views/apps/web-automation/ProjectStoreModule";
+import WebStoreModule from "@/views/apps/web-automation/web-test-case/webStoreModule"
+import webStoreModule from "@/views/apps/web-automation/web-test-case/webStoreModule";
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -18,7 +20,10 @@ export default new Vuex.Store({
     appConfig,
     verticalMenu,
     webAuto,
+    'web-test-case': webStoreModule,
+    'web-automation': ProjectStoreModule,
     'app-ecommerce': ecommerceStoreModule,
+    'web-element':WebStoreModule,
   },
   strict: process.env.DEV,
 })

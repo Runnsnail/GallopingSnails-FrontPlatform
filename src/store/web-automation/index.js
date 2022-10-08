@@ -25,5 +25,14 @@ export default {
             })
         },
 
+        removeGroupTeam(ctx, id ){
+            return new Promise((resolve, reject) => {
+                axios
+                    .delete(`/teamGroup/deleteTeam/${id}`)
+                    .then(response => resolve(response))
+                    .catch(error => reject(error))
+            })
+        }
+
     },
 }

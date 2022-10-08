@@ -34,7 +34,6 @@ export const getRequest = (url, params) => {
 
 // get 无参请求
 export const getNoParamRequest = (url) => {
-  debugger
   let accessToken = localStorage.getItem('accessToken');
   return axiosIns({
     method: 'get',

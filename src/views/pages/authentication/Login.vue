@@ -16,13 +16,16 @@
         lg="8"
         class="d-none d-lg-flex align-items-center p-5"
       >
-        <div class="w-100 d-lg-flex align-items-center justify-content-center px-5">
-          <b-img
-            fluid
-            :src="imgUrl"
-            alt="Login V2"
-          />
-        </div>
+        <!--3D动态态首图-->
+        <iframe src='https://my.spline.design/untitled-b7290f9ce8ff48256ae71bf1bcff7654/' frameborder='0' width='100%' height='100%'></iframe>
+<!--静态首图-->
+<!--        <div class="w-100 d-lg-flex align-items-center justify-content-center px-5">-->
+<!--          <b-img-->
+<!--            fluid-->
+<!--            :src="imgUrl"-->
+<!--            alt="Login V2"-->
+<!--          />-->
+<!--        </div>-->
       </b-col>
       <!-- /Left Text-->
 

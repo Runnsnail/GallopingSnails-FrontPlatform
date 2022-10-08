@@ -1,13 +1,13 @@
 <template>
-  <b-card  v-for="item in teamData" v-if="item" class="card-app-design">
+  <b-card class="card-app-design">
     <b-badge variant="light-primary">
-      {{ item.updateTime }}
+      03 Sep, 20
     </b-badge>
     <b-card-title class="mt-1 mb-75">
-      {{ item.cardTitle }}
+      App design
     </b-card-title>
     <b-card-text class="font-small-2 mb-2">
-      {{ item.description }}
+      You can Find Only Post and Quotes Related to IOS like ipad app design, iphone app design
     </b-card-text>
 
     <!-- design group -->
@@ -16,10 +16,16 @@
         Team
       </h6>
       <b-badge
-        variant="light-warning"
-        class="mr-1"
+          variant="light-warning"
+          class="mr-1"
       >
-        {{ item.responsibility }}
+        Figma
+      </b-badge>
+      <b-badge
+          variant="light-primary"
+          class="ml-25"
+      >
+        Wireframe
       </b-badge>
     </div>
     <div class="design-group">
@@ -27,31 +33,31 @@
         Members
       </h6>
       <b-avatar
-        :src="require('@/assets/images/portrait/small/avatar-s-9.jpg')"
-        size="34"
-        class="mr-1"
+          :src="require('@/assets/images/portrait/small/avatar-s-9.jpg')"
+          size="34"
+          class="mr-1"
       />
       <b-avatar
-        text="PI"
-        size="32"
-        variant="light-danger"
-        class="mr-1"
+          text="PI"
+          size="32"
+          variant="light-danger"
+          class="mr-1"
       />
       <b-avatar
-        :src="require('@/assets/images/portrait/small/avatar-s-14.jpg')"
-        size="34"
-        class="mr-1"
+          :src="require('@/assets/images/portrait/small/avatar-s-14.jpg')"
+          size="34"
+          class="mr-1"
       />
       <b-avatar
-        :src="require('@/assets/images/portrait/small/avatar-s-20.jpg')"
-        size="34"
-        class="mr-1"
+          :src="require('@/assets/images/portrait/small/avatar-s-20.jpg')"
+          size="34"
+          class="mr-1"
       />
       <b-avatar
-        text="AL"
-        size="32"
-        variant="light-secondary"
-        class="mr-1"
+          text="AL"
+          size="32"
+          variant="light-secondary"
+          class="mr-1"
       />
     </div>
     <!--/ design group -->
@@ -67,29 +73,29 @@
       </div>
       <div class="design-planning">
         <p class="card-text mb-25">
-          Total number of use cases
+          Budget
         </p>
         <h6 class="mb-0">
-          1000 (需要在vuex获取数据)
+          $49251.91
+        </h6>
+      </div>
+      <div class="design-planning">
+        <p class="card-text mb-25">
+          Cost
+        </p>
+        <h6 class="mb-0">
+          $840.99
         </h6>
       </div>
     </div>
 
     <!-- button -->
     <b-button
-      v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-      variant="primary"
-      block
-      @click="joinTeam"
-    >
-      Join Team
-    </b-button>
-    <b-button
+        v-ripple.400="'rgba(255, 255, 255, 0.15)'"
         variant="primary"
         block
-        @click="$emit('next-step')"
     >
-      Enter Team
+      Join Team
     </b-button>
   </b-card>
 </template>
@@ -98,8 +104,8 @@
 import {
   BCard, BBadge, BCardTitle, BCardText, BAvatar, BButton,
 } from 'bootstrap-vue'
-import Ripple from 'vue-ripple-directive';
-import {putRequest} from "@/libs/axios";
+import Ripple from 'vue-ripple-directive'
+
 export default {
   components: {
     BCard,
@@ -111,31 +117,6 @@ export default {
   },
   directives: {
     Ripple,
-  },
-  props: {
-    teamData: {
-      type: Object,
-      default: () => {},
-    },
-  },
-  methods: {
-    joinTeam(){
-      putRequest("/teamGroup/insertTeam",item.groupNum).then(() => {
-        this.$bvToast.toast('Congratulations: Join successfully', {
-          title: `Variant  success`,
-          variant: 'success',
-          solid: false,
-          toaster:'b-toaster-bottom-right',
-        })
-      }, e => {
-        this.$bvToast.toast('Note: Join failed', {
-          title: `Variant  fail`,
-          variant: 'danger',
-          solid: false,
-          toaster:'b-toaster-bottom-right',
-        })
-      })
-    },
   },
 }
 </script>

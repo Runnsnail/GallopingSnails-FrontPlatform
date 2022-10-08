@@ -180,6 +180,31 @@ export default [
       ],
     },
   },
+  {
+    path: '/apps/project-info/:slug',
+    name: 'apps-project-info',
+    component: () => import('@/views/apps/project-info/ProjectInformation.vue'),
+    meta: {
+      pageTitle: 'Project Details',
+    },
+  },
+  {
+    path: '/apps/project-info/edit/:id',
+    name: 'apps-project-edit',
+    component: () => import('@/views/apps/project-info/ProjectEdit.vue'),
+    meta: {
+      pageTitle: 'Project Edit',
+      breadcrumb: [
+        {
+          text: 'Project',
+        },
+        {
+          text: 'Edit',
+          active: true,
+        },
+      ],
+    },
+  },
 
   // *===============================================---*
   // *--------- USER ---- ---------------------------------------*

@@ -83,8 +83,8 @@ router.beforeEach((to, _, next) => {
 
         // Redirect if logged in
         if (to.meta.redirectIfLoggedIn && isLoggedIn && to.path !== '/') {
-            debugger
-            alert(store.state.route.asyncRoutes)
+
+            // alert(store.state.route.asyncRoutes)
             if (store.state.route.asyncRoutes) {
                 const fmtRoutes = initMenu();
                console.log(fmtRoutes)

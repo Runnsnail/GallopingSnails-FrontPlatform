@@ -1,4 +1,4 @@
-<template>
+ <template>
   <b-card-code
     title="Table Kitchen Sink"
     no-body

@@ -33,6 +33,7 @@ import { FormWizard, TabContent } from 'vue-form-wizard'
 import { ref } from '@vue/composition-api'
 import ElementMangement from "@/views/apps/web-automation/ElementMangement";
 import TeamGroup from "@/views/apps/web-automation/TeamGroup";
+import ProjectLeftFilter from "@/views/apps/web-automation/ProjectLeftFilter";
 
 export default {
   components: {

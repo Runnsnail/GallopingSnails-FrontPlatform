@@ -3,6 +3,19 @@ export default [
         header: 'Group & Team',
     },
     {
+            title: 'Project',
+            icon: 'BookOpenIcon',
+            children: [
+                {
+                    title: 'Project Info',
+                    route: { name: 'apps-project-info', params: {slug: '2'}},
+                },
+                {
+                    title: 'Project Edit',
+                    route: {name: 'apps-project-edit', params: {id: '2'}},
+                },],
+    },
+    {
         title: 'Email',
         route: 'apps-email',
         icon: 'MailIcon',

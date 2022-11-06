@@ -34,14 +34,19 @@ export default [
     icon: 'SlackIcon',
     children: [
       {
-        title: 'Web PageElement',
+        title: 'Web PM',
         icon: 'PackageIcon',
         route: 'page-element-management',
       },
       {
-        title: 'Web TestCase',
+        title: 'Web PageElement',
         icon: 'OctagonIcon',
         route: 'test-case-management',
+      },
+      {
+        title: 'Web TestSuits',
+        icon: 'AirplayIcon',
+        route: 'web-test-suits',
       },
       {
         title: 'WebUI Execution',

@@ -26,6 +26,8 @@ export const useWebFiltersPages = () => {
     const pageOptions = [3, 5, 10]
     const totalRows = ref(null)
 
+    const bodyTextVariant = 'semi-dark'
+
     const actionOptions = [
         {text: 'id', value: 'id'},
         {text: 'name', value: 'name'},
@@ -48,6 +50,7 @@ export const useWebFiltersPages = () => {
         productId,
         pageId,
         actionOptions,
-        pageProject
+        pageProject,
+        bodyTextVariant,
     }
 }

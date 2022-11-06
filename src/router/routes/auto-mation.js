@@ -40,16 +40,31 @@ export default [
             contentClass: 'email-application',
         },
     },
-    // {
-    //     path: '/apps/web-automation/:projectID',
-    //     name: 'test-case-management-projectId',
-    //     component: () => import('@/views/apps/web-automation/web-test-case/WebTestCaseManagement.vue'),
-    //     meta: {
-    //         contentRenderer: 'sidebar-left',
-    //         contentClass: 'email-application',
-    //         navActiveLink: 'test-case-management',
-    //     },
-    // },
+    {
+        path: '/apps/web-automation',
+        name: 'web-test-suits',
+        component: () => import('@/views/apps/web-automation/web-test-suit/WebTestSuits'),
+        meta: {
+            contentRenderer: 'sidebar-left',
+            contentClass: 'email-application',
+        },
+    },
+
+    {
+        path: '/apps/web-automation',
+        name: 'web-case-debug',
+        component: () => import('@/views/apps/web-automation/web-test-suit/WebCaseDebug'),
+    },
+
+    {
+        path: '/apps/web-automation/:id',
+        name: 'web-case-edit',
+        component: () => import('@/views/apps/web-automation/web-test-suit/WebCaseEdit.vue'),
+        meta: {
+            contentRenderer: 'sidebar-left',
+            contentClass: 'email-application',
+        },
+    },
     {
         path: '/apps/web-automation',
         name: 'web-page-execution',

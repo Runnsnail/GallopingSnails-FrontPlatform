@@ -11,6 +11,7 @@ import webAuto from "./web-automation"
 import ProjectStoreModule from "@/views/apps/web-automation/ProjectStoreModule";
 import WebStoreModule from "@/views/apps/web-automation/web-test-case/webStoreModule"
 import webStoreModule from "@/views/apps/web-automation/web-test-case/webStoreModule";
+import webTestSuitStore from "@/views/apps/web-automation/web-test-suit/webTestSuitStore";
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -21,6 +22,7 @@ export default new Vuex.Store({
     verticalMenu,
     webAuto,
     'web-test-case': webStoreModule,
+    'web-test-suits': webTestSuitStore,
     'web-automation': ProjectStoreModule,
     'app-ecommerce': ecommerceStoreModule,
     'web-element':WebStoreModule,

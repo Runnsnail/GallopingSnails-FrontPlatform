@@ -28,6 +28,8 @@
     "chart.js": "2.9.4",
     "core-js": "3.23.3",
     "echarts": "4.8.0",
+    "element-tree-line": "^0.2.1",
+    "element-ui": "^2.15.10",
     "jsonwebtoken": "8.5.1",
     "leaflet": "1.6.0",
     "moment": "^2.29.4",
@@ -62,6 +64,7 @@
     "vue-toastification": "1.7.11",
     "vue-tour": "1.5.0",
     "vue-tree-halower": "1.8.3",
+    "vue-tree-list": "^1.5.0",
     "vue2-leaflet": "2.5.2",
     "vuedraggable": "2.24.3",
     "vuex": "3.6.0"

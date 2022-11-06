@@ -188,6 +188,7 @@
                 variant="primary"
                 class="mr-2"
                 type="submit"
+                @click="hide"
             >
               Add
             </b-button>
@@ -273,13 +274,6 @@ export default {
 
     const onSubmit = () => {
       axiosIns.post("/teamGroup/addTeam", teamData.value).then(response => {
-
-        this.$bvToast.toast('Congratulations: Add team successfully', {
-          title: `Variant  success`,
-          variant: 'success',
-          solid: false,
-          toaster: 'b-toaster-bottom-right',
-        })
         emit('refresh-data')
         emit('update:is-add-member-sidebar-active', false)
       }), e => {

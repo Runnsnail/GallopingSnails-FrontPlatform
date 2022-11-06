@@ -32,6 +32,16 @@ export default {
           .catch(error => reject(error))
       })
     },
+
+    deleteProject(ctx, ProjectId ) {
+      return new Promise((resolve, reject) => {
+        axiosIns
+            .delete(`/tProjectPage/remove/${ProjectId}`)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+
     fetchWishlistProjects() {
       return new Promise((resolve, reject) => {
         axiosIns

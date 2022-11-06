@@ -26,7 +26,6 @@
           </div>
 
 
-
           <vue-perfect-scrollbar
               :settings="perfectScrollbarSettings"
               class="sidebar-menu-list scroll-area"
@@ -48,40 +47,60 @@
 
             </div>
 
-              <!-- modal PageProject-->
-              <b-modal
-                  id="project-page"
-                  cancel-variant="outline-secondary"
-                  ok-title="Add"
-                  ok-variant="success"
-                  cancel-title="Close"
-                  centered
-                  title="Add Page"
-                  @ok="addNewPage"
-              >
+            <!-- modal PageProject-->
+            <b-modal
+                id="project-page"
+                cancel-variant="outline-secondary"
+                ok-title="Add"
+                ok-variant="success"
+                cancel-title="Close"
+                :body-bg-variant="bodyTextVariant"
+                centered
+                title="Add Page"
+                @click.prevent="validationForm"
+                @ok="addNewPage(pageProject)"
+            >
+              <validation-observer ref="simpleRules">
                 <b-form>
                   <b-form-group>
-                    <input v-model="pageProject.projectId=projectCurrent "hidden/>
+                    <input v-model="pageProject.projectId=projectCurrent " hidden/>
                     <input v-model="pageProject.isEnable=1 " hidden/>
                     <label for="pageName">PageName:</label>
-                    <b-form-input
-                        id="pageName"
-                        v-model="pageProject.pageName"
-                        type="text"
-                        placeholder="Email Address"
-                    />
+                    <validation-provider
+                        #default="{ errors }"
+                        name="pageName"
+                        rules="required"
+                    >
+                      <b-form-input
+                          id="pageName"
+                          v-model="pageProject.pageName"
+                          :state="errors.length > 0 ? false:null"
+                          type="text"
+                          placeholder="pageName..."
+                      />
+                      <small class="text-danger">{{ errors[0] }}</small>
+                    </validation-provider>
                   </b-form-group>
                   <b-form-group>
                     <label for="remark">Remark:</label>
-                    <b-form-input
-                        id="remark"
-                        v-model="pageProject.remark"
-                        type="text"
-                        placeholder="Password"
-                    />
+                    <validation-provider
+                        #default="{ errors }"
+                        name="remark"
+                        rules="required"
+                    >
+                      <b-form-input
+                          id="remark"
+                          v-model="pageProject.remark"
+                          :state="errors.length > 0 ? false:null"
+                          type="text"
+                          placeholder="remark..."
+                      />
+                      <small class="text-danger">{{ errors[0] }}</small>
+                    </validation-provider>
                   </b-form-group>
                 </b-form>
-              </b-modal>
+              </validation-observer>
+            </b-modal>
             <!-- Labels -->
             <h6 class="section-label mt-1 mb-1 px-2">
               Project page
@@ -98,6 +117,12 @@
                     :class="`bullet-success`"
                 />
                 <span>{{ page.pageName }}</span>
+                <feather-icon
+                    icon="FeatherIcon"
+                    size="17"
+                    class="cursor-pointer ml-1"
+                    @click="confirmButtonColor(page.id)"
+                />
               </b-list-group-item>
             </b-list-group>
             <b-card-body class="d-flex justify-content-between flex-wrap pt-0">
@@ -156,6 +181,8 @@ import Ripple from 'vue-ripple-directive';
 import BCardCode from "@core/components/b-card-code/BCardCode";
 import {ref, watch} from "@vue/composition-api";
 import store from '@/store'
+import {ValidationObserver, ValidationProvider} from "vee-validate";
+import {required} from '@core/utils/validations/validations'
 
 export default {
   directives: {
@@ -190,6 +217,10 @@ export default {
 
     // 3rd Party
     VuePerfectScrollbar,
+    // vaildtion
+    ValidationProvider,
+    ValidationObserver,
+
   },
 
   setup(props) {
@@ -197,14 +228,15 @@ export default {
       maxScrollbarLength: 60,
     }
     const projectCurrent = props.projectsId
+    const {filter, pageOptions, projectPages, totalRows, pageProject,bodyTextVariant} = useWebFiltersPages()
 
-  const addNewPage=(param) =>{
-    store.dispatch('web-test-case/addProjectPage', param).then(() => {
-      fetchPageProject()
-        }
-    )
+    const deletePage = param =>{
+      store.dispatch('web-automation/deleteProject',param).then(response => {
+        fetchPageProject()
+          }
+      )
     }
-    const {filter, pageOptions, projectPages, totalRows,pageProject} = useWebFiltersPages()
+
     const fetchPageProject = () => {
       store.dispatch('web-automation/fetchPageProject', {
         q: filter.value.q,
@@ -242,11 +274,79 @@ export default {
       projectPages,
       totalRows,
       projectCurrent,
-      addNewPage,
       pageProject,
+      deletePage,
+      bodyTextVariant,
       selected: 'default',
     }
   },
+
+  data() {
+    return {required,}
+  },
+
+  methods: {
+
+    validationForm() {
+      this.$refs.simpleRules.validate().then(success => {
+        if (success) {
+        }
+      })
+    },
+
+    // comfirm button
+    confirmButtonColor(id) {
+      this.$swal({
+        title: '确定删除吗?',
+        text: "你将无法恢复这个!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '确定, 删除!',
+        customClass: {
+          confirmButton: 'btn btn-primary',
+          cancelButton: 'btn btn-outline-danger ml-1',
+        },
+        buttonsStyling: false,
+      }).then(result => {
+        if (result.value) {
+          this.deletePage(id)
+          this.$swal({
+            icon: 'success',
+            title: '已删除!',
+            text: '项目页面已删除.',
+            customClass: {
+              confirmButton: 'btn btn-success',
+            },
+          })
+        } else if (result.dismiss === 'cancel') {
+          this.$swal({
+            title: '取消',
+            text: '项目页面的文件是安全的 :)',
+            icon: 'error',
+            customClass: {
+              confirmButton: 'btn btn-success',
+            },
+          })
+        }
+      })
+    },
+
+    addNewPage(param) {
+      store.dispatch('web-test-case/addProjectPage', {
+        id: '',
+        projectId: this.projectCurrent,
+        pageName: param.pageName,
+        isEnable: 1,
+        remark: param.remark,
+        createBy: '',
+        createTime: '',
+        updateBy: '',
+        updateTime: '',
+      }).then(() => {
+        this.fetchPageProject() }
+      )
+    },
+}
 }
 </script>
 

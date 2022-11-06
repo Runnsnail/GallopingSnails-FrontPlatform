@@ -18,7 +18,7 @@ export default [
             target: '_blank',
           },
           {
-            title: 'Register v1',
+            title: 'Regis ter v1',
             route: 'auth-register-v1',
             target: '_blank',
           },

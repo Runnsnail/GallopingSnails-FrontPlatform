@@ -7,8 +7,9 @@ export default [
         name: 'apps-roles',
         component: () => import('@/views/apps/roles-permission/Roles.vue'),
         meta: {
-            resource: 'ACL',
+            resource: 'Auth',
             action: 'read',
+            redirectIfLoggedIn: true,
         },
     },
     {
@@ -18,6 +19,7 @@ export default [
         meta: {
             resource: 'ACL',
             action: 'read',
+            redirectIfLoggedIn: true,
         },
     },
 ]

@@ -9,7 +9,8 @@ import App from './App.vue'
 
 // Global Components
 import './global-components'
-
+// Element Ui
+import ElementUI from 'element-ui';
 // 3rd party plugins
 import '@axios'
 import '@/libs/acl'
@@ -19,14 +20,14 @@ import '@/libs/toastification'
 import '@/libs/sweet-alerts'
 import '@/libs/vue-select'
 import '@/libs/tour'
-
+import 'element-ui/lib/theme-chalk/index.css';
 // Axios Mock Adapter
 import '@/@fake-db/db'
 
 // BSV Plugin Registration
 Vue.use(ToastPlugin)
 Vue.use(ModalPlugin)
-
+Vue.use(ElementUI);
 // Composition API
 Vue.use(VueCompositionAPI)
 //formate Date

@@ -1,6 +1,6 @@
 <template>
   <section class="grid-view wishlist-items" v-if="isReloadData">
-    <div >
+    <div>
       <team-list-add
           :is-add-member-sidebar-active.sync="isAddMemberSidebarActive"
           @refresh-data="refreshData"
@@ -11,7 +11,7 @@
           lg="7"
           md="6"
       >
-        <card-advance-congratulation />
+        <card-advance-congratulation/>
       </b-col>
       <b-col
           lg="5"
@@ -45,137 +45,137 @@
           lg="4"
           md="3"
       >
-    <b-card
-        class="card-app-design"
-    >
-      <div class="app-fixed-search d-flex align-items-center">
-        <b-badge variant="light-primary">
-          {{ currentTime }}
-        </b-badge>
-      <div class="dropdown">
-        <b-dropdown
-            variant="link"
-            no-caret
-            toggle-class="p-0 mr-1"
-            right
+        <b-card
+            class="card-app-design"
         >
-          <template #button-content>
-            <feather-icon
-                icon="MoreVerticalIcon"
-                size="16"
-                class="align-middle text-body"
+          <div class="app-fixed-search d-flex align-items-center">
+            <b-badge variant="light-primary">
+              {{ currentTime }}
+            </b-badge>
+            <div class="dropdown">
+              <b-dropdown
+                  variant="link"
+                  no-caret
+                  toggle-class="p-0 mr-1"
+                  right
+              >
+                <template #button-content>
+                  <feather-icon
+                      icon="MoreVerticalIcon"
+                      size="16"
+                      class="align-middle text-body"
+                  />
+                </template>
+                <b-dropdown-item @click="deleteTeam(item.teamId)">
+                  Delete Team
+                </b-dropdown-item>
+              </b-dropdown>
+            </div>
+
+          </div>
+          <b-card-title class="mt-1 mb-75">
+            {{ item.cardTitle }}
+          </b-card-title>
+          <b-card-text class="font-medium-1 mb-2">
+            {{ item.teamDescription }}
+          </b-card-text>
+
+          <!-- design group -->
+          <div class="design-group">
+            <h6 class="section-label">
+              Team
+            </h6>
+            <b-badge
+                variant="light-warning"
+                class="mr-1"
+            >
+              {{ item.teamResponsibility }}
+            </b-badge>
+          </div>
+          <div class="design-group">
+            <h6 class="section-label">
+              Members
+            </h6>
+            <b-avatar
+                :src="require('@/assets/images/portrait/small/avatar-s-9.jpg')"
+                size="34"
+                class="mr-1"
             />
-          </template>
-          <b-dropdown-item @click="deleteTeam(item.teamId)">
-            Delete Team
-          </b-dropdown-item>
-        </b-dropdown>
-      </div>
+            <b-avatar
+                text="PI"
+                size="32"
+                variant="light-danger"
+                class="mr-1"
+            />
+            <b-avatar
+                :src="require('@/assets/images/portrait/small/avatar-s-14.jpg')"
+                size="34"
+                class="mr-1"
+            />
+            <b-avatar
+                :src="require('@/assets/images/portrait/small/avatar-s-20.jpg')"
+                size="34"
+                class="mr-1"
+            />
+            <b-avatar
+                text="AL"
+                size="32"
+                variant="light-secondary"
+                class="mr-1"
+            />
+          </div>
+          <!--/ design group -->
 
-      </div>
-      <b-card-title class="mt-1 mb-75">
-        {{ item.cardTitle }}
-      </b-card-title>
-      <b-card-text class="font-medium-1 mb-2">
-        {{ item.teamDescription }}
-      </b-card-text>
-
-      <!-- design group -->
-      <div class="design-group">
-        <h6 class="section-label">
-          Team
-        </h6>
-        <b-badge
-            variant="light-warning"
-            class="mr-1"
-        >
-          {{ item.teamResponsibility }}
-        </b-badge>
-      </div>
-      <div class="design-group">
-        <h6 class="section-label">
-          Members
-        </h6>
-        <b-avatar
-            :src="require('@/assets/images/portrait/small/avatar-s-9.jpg')"
-            size="34"
-            class="mr-1"
-        />
-        <b-avatar
-            text="PI"
-            size="32"
-            variant="light-danger"
-            class="mr-1"
-        />
-        <b-avatar
-            :src="require('@/assets/images/portrait/small/avatar-s-14.jpg')"
-            size="34"
-            class="mr-1"
-        />
-        <b-avatar
-            :src="require('@/assets/images/portrait/small/avatar-s-20.jpg')"
-            size="34"
-            class="mr-1"
-        />
-        <b-avatar
-            text="AL"
-            size="32"
-            variant="light-secondary"
-            class="mr-1"
-        />
-      </div>
-      <!--/ design group -->
-
-      <div class="design-planning-wrapper">
-        <div class="design-planning">
-          <p class="card-text mb-25">
-            Create Time
-          </p>
-          <h6 class="mb-0">
-            {{ item.createTime | timeFormat('YYYY-MM-DD') }}
-          </h6>
-        </div>
-        <div class="design-planning">
-          <p class="card-text mb-25">
-            Total case
-          </p>
-          <h6 class="mb-0">
-            1000
-          </h6>
-        </div>
-        <div class="design-planning">
-          <p class="card-text mb-25">
-            Team Name
-          </p>
-          <h6 class="mb-0">
-            {{  item.teamName }}
-          </h6>
-        </div>
-      </div>
-      <!-- button -->
-      <b-button
-          variant="light"
-          class="btn-wishlist remove-wishlist"
-          block
-          @click="joinTeam(item.teamMember)"
-      >
-        <feather-icon icon="AwardIcon"/>
-        <span>Join Team</span>
-      </b-button>
-      <!--          @click="$emit('next-step')"-->
-      <b-button
-          variant="primary"
-          class="btn-cart move-cart"
-          block
-          @click="jump(item.cardTitle)"
-      >
-        <feather-icon
-            icon="BookmarkIcon"
-            class="mr-50"
-        />
-        <span> Enter Team</span>
-      </b-button>
-    </b-card>
+          <div class="design-planning-wrapper">
+            <div class="design-planning">
+              <p class="card-text mb-25">
+                Create Time
+              </p>
+              <h6 class="mb-0">
+                {{ item.createTime | timeFormat('YYYY-MM-DD') }}
+              </h6>
+            </div>
+            <div class="design-planning">
+              <p class="card-text mb-25">
+                Total case
+              </p>
+              <h6 class="mb-0">
+                1000
+              </h6>
+            </div>
+            <div class="design-planning">
+              <p class="card-text mb-25">
+                Team Name
+              </p>
+              <h6 class="mb-0">
+                {{ item.teamName }}
+              </h6>
+            </div>
+          </div>
+          <!-- button -->
+          <b-button
+              variant="light"
+              class="btn-wishlist remove-wishlist"
+              block
+              @click="joinTeam(item.teamMember)"
+          >
+            <feather-icon icon="AwardIcon"/>
+            <span>Join Team</span>
+          </b-button>
+          <!--          @click="$emit('next-step')"-->
+          <b-button
+              variant="primary"
+              class="btn-cart move-cart"
+              block
+              @click="jump(item.cardTitle)"
+          >
+            <feather-icon
+                icon="BookmarkIcon"
+                class="mr-50"
+            />
+            <span> Enter Team</span>
+          </b-button>
+        </b-card>
       </b-col>
     </b-row>
   </section>
@@ -191,7 +191,7 @@ import CardAdvanceCongratulation from '../../card/card-advance/CardAdvanceCongra
 import CardAdvanceMedal from '../../card/card-advance/CardAdvanceMedal.vue'
 import CardAdvanceAppDesign from '../../card/card-advance/CardAdvanceAppDesign'
 import TeamListAdd from "@/views/apps/web-automation/TeamListAdd";
-import {ref} from "@vue/composition-api";
+import {ref, watch} from "@vue/composition-api";
 import {getNoParamRequest} from "@/libs/axios";
 import store from "@/store";
 import moment from "moment";
@@ -246,37 +246,36 @@ export default {
             teamData.value = response.data.data.teamData
           })
     }
-    const deleteTeam = param =>{
-      store.dispatch('webAuto/removeGroupTeam',param).then(() => {
+    const deleteTeam = param => {
+      store.dispatch('webAuto/removeGroupTeam', param).then(() => {
         fetchGroupTeams()
       })
     }
+
     fetchGroupTeams()
+    const refreshData = () => {
+      fetchGroupTeams()
+    }
+
     return {
       isAddMemberSidebarActive,
       teamData,
       currentTime,
-      deleteTeam
+      deleteTeam,
+      refreshData
     }
   },
 
   methods: {
-    refreshData() {
-      this.reloadPart()
-    },
-    reloadPart() {
-      this.isReloadData = false
-      this.$nextTick(() => {
-        this.isReloadData = true
-      })
-    },
-    jump(cardTitle){
-      bus.$emit('teamCard',cardTitle)
+
+    jump(cardTitle) {
+      bus.$emit('teamCard', cardTitle)
       this.$emit('next-step')
     },
 
+
     joinTeam(teamMember) {
-      const teamData ={memberCode:teamMember}
+      const teamData = {memberCode: teamMember}
       axiosIns.post("/sysUser/insertTeam", teamData).then(() => {
         this.$bvToast.toast('Congratulations: Join successfully', {
           title: `Variant  success`,

@@ -1,4 +1,5 @@
 import axios from '@axios'
+import axiosIns from "@/libs/axios";
 
 export default {
     namespaced: true,
@@ -6,69 +7,65 @@ export default {
     getters: {},
     mutations: {},
     actions: {
-        fetchElements(ctx, payload) {
+        fetchTestSuits(ctx, payload) {
             return new Promise((resolve, reject) => {
-                axios
-                    .get('/PageElement/listPageElement', {params: payload})
-                    .then(response => resolve(response))
-                    .catch(error => reject(error))
-            })
-        },
-        fetchElementsById(ctx, payload) {
-            return new Promise((resolve, reject) => {
-                axios
-                    .get(`/PageElement/listByElementId/${payload}`)
-                    .then(response => resolve(response))
-                    .catch(error => reject(error))
-            })
-        },
-        addProjectPage(ctx, payload) {
-            return new Promise((resolve, reject) => {
-                axios
-                    .post(`/tProjectPage/add`,payload)
-                    .then(response => resolve(response))
-                    .catch(error => reject(error))
-            })
-        },
-        removeItemElement(ctx, payload) {
-            return new Promise((resolve, reject) => {
-                axios
-                    .get(`/PageElement/remove/${payload}`)
-                    .then(response => resolve(response))
-                    .catch(error => reject(error))
-            })
-        },
-        duplicateElement(ctx, payload) {
-            return new Promise((resolve, reject) => {
-                axios
-                    .get(`/PageElement/copyElemenById/${payload}`)
+                axiosIns
+                    .get('/tTestsuiteUi/listTree', { params: payload })
                     .then(response => resolve(response))
                     .catch(error => reject(error))
             })
         },
 
-        saveElement(ctx, payload) {
+        deleteSuits(ctx, ProjectId ) {
             return new Promise((resolve, reject) => {
-                axios
-                    .post('/PageElement/edit', {params: payload})
+                axiosIns
+                    .delete(`/tTestsuiteUi/remove/${ProjectId}`)
                     .then(response => resolve(response))
                     .catch(error => reject(error))
             })
         },
 
-        movePageElements(ctx, payload) {
+
+        addSuits(ctx, payload) {
             return new Promise((resolve, reject) => {
                 axios
-                    .post('/PageElement/batchMoveElements', {params: payload})
+                    .post(`/tTestsuiteUi/add`,{params: payload})
                     .then(response => resolve(response))
                     .catch(error => reject(error))
             })
         },
 
-        savePageElements(ctx, payload) {
+        editSuits(ctx, payload) {
             return new Promise((resolve, reject) => {
                 axios
-                    .post('/PageElement/batchSaveElements', {params: payload})
+                    .post('/tTestsuiteUi/edit', {params: payload})
+                    .then(response => resolve(response))
+                    .catch(error => reject(error))
+            })
+        },
+
+        addCaseStep(ctx, payload) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .post(`/StepUiNew/addCaseStep`,payload)
+                    .then(response => resolve(response))
+                    .catch(error => reject(error))
+            })
+        },
+
+        fetchStepById(ctx, stepId) {
+            return new Promise((resolve, reject) => {
+                axiosIns
+                    .get(`/StepUiNew/fetchStepById/${stepId}`)
+                    .then(response => resolve(response))
+                    .catch(error => reject(error))
+            })
+        },
+
+        fetchCaseSteps(ctx, caseId) {
+            return new Promise((resolve, reject) => {
+                axiosIns
+                    .get(`/StepUiNew/fetchCaseSteps/${caseId}`)
                     .then(response => resolve(response))
                     .catch(error => reject(error))
             })

@@ -69,7 +69,8 @@ const whiteList = ['/login', '/error-404', '/', '/pages/miscellaneous/not-author
 
 router.beforeEach((to, _, next) => {
     const isLoggedIn = isUserLoggedIn()
-    if (whiteList.indexOf(to.path) !== -1 && !isLoggedIn) {
+    //&& !isLoggedIn
+    if (whiteList.indexOf(to.path) !== -1 ) {
         next();
     } else {
         if (!canNavigate(to)) {
@@ -87,10 +88,8 @@ router.beforeEach((to, _, next) => {
             // alert(store.state.route.asyncRoutes)
             if (store.state.route.asyncRoutes) {
                 const fmtRoutes = initMenu();
-               console.log(fmtRoutes)
                 if (fmtRoutes) {
                     store.dispatch('route/ADD_ROUTE', fmtRoutes).then(() => {
-                            debugger
                             router.addRoutes(fmtRoutes)
                             next({...to, replace: true})
                         }

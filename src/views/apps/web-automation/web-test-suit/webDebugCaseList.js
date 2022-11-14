@@ -14,6 +14,21 @@ export const getDebugerCase =() =>{
 
     const newCardID = ref(null)
 
+    const operationName =ref(
+        {
+            ElementOperation : "元素操作",
+            CookerOperation : "Cooker操作",
+            KeyboardOperation : "键盘操作",
+            WatingOperation : "等待操作",
+            JSOperation : "JS操作",
+            BrowserOperation : "浏览器操作",
+            FileOperation : "文件操作",
+            MouseOperation : "鼠标操作",
+            AlterOperation : "弹窗操作",
+            ScenarioOperation : "场景导入",
+        }
+    )
+
     const caseId = ref()
 
     const showStep = ref(true)
@@ -57,6 +72,7 @@ export const getDebugerCase =() =>{
         teamNames,
         projectNames,
         status,
+        operationName,
     }
 }
 

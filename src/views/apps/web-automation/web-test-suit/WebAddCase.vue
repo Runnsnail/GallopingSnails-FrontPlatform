@@ -18,7 +18,7 @@
       <h5
           class="mb-0"
       >
-        Add Case
+        {{ caseId===0 ? 'Add Case' : ' Update Case ' }}
       </h5>
 
         <feather-icon
@@ -30,6 +30,13 @@
 
     </div>
 
+    <div class="bg-light-primary rounded-top text-center">
+      <b-img
+          :src="require('@/assets/images/illustration/email.svg')"
+          alt="Meeting Pic"
+          height="170"
+      />
+    </div>
     <!-- Body -->
     <validation-observer
         #default="{ handleSubmit }"
@@ -138,7 +145,7 @@
               class="mr-2"
               type="submit"
           >
-            {{ caseData.caseId ? 'Update' : 'Add ' }}
+            {{ caseId===0 ? 'Add' : 'Update ' }}
           </b-button>
           <b-button
               v-ripple.400="'rgba(186, 191, 199, 0.15)'"
@@ -163,7 +170,7 @@ import {
   BFormGroup,
   BFormInput,
   BFormInvalidFeedback,
-  BFormSelect,
+  BFormSelect, BImg,
   BSidebar
 } from "bootstrap-vue";
 import vSelect from "vue-select";
@@ -190,6 +197,7 @@ export default {
     BAvatar,
     BFormInvalidFeedback,
     BFormSelect,
+    BImg,
 
     // 3rd party packages
     vSelect,
@@ -257,8 +265,6 @@ export default {
 
     const caseData = ref(JSON.parse(JSON.stringify(blankCaseData)))
 
-
-    console.log(caseData.value)
     const resetCaseData = () => {
       caseData.value = JSON.parse(JSON.stringify(blankCaseData))
     }
@@ -283,7 +289,6 @@ export default {
 
 
     const onSubmit = () => {
-      console.log(caseData.value.caseName)
       axiosIns.post("/TestcaseUiNew/addOrEdit", {
         suitId: props.suitId,
         caseId: props.caseId,

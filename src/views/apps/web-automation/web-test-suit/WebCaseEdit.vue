@@ -44,6 +44,7 @@ import {useRouter} from "@core/utils/utils";
 import {ref} from "@vue/composition-api";
 import WebDebugBrowerMessage from "@/views/apps/web-automation/web-test-suit/WebDebugBrowerMessage";
 import bus from "@/views/apps/web-automation/bus";
+import store from '@/store'
 import {getDebugerCase} from "@/views/apps/web-automation/web-test-suit/webDebugCaseList";
 import WebLogMessage from "@/views/apps/web-automation/web-test-suit/WebLogMessage";
 
@@ -73,12 +74,13 @@ export default {
     }
 
     const stepInfo = ref({})
-    console.log(showCaseInfo.value)
+
     const fetchStepById = (param) => {
       store.dispatch('web-test-suits/fetchStepById', param).then(response =>
           stepInfo.value = response.data.data
       )
     }
+    console.log(stepInfo.value)
     const {route} = useRouter()
     const newCardID = getDebugerCase()
     const caseId = newCardID.value==null ? route.value.params.id:newCardID.value

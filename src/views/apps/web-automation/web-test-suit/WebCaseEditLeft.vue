@@ -35,23 +35,24 @@
               class="sidebar-menu-list scroll-area"
           >
             <b-card-code title="Test Steps">
-            <!-- draggable -->
-            <app-timeline>
-            <draggable
-                v-model="stepList"
-                class="list-group list-group-flush cursor-move"
-            >
-                <app-timeline-item
-                    v-for="listItem in stepList"
-                    :key="listItem.id"
-                    :title="listItem.name"
-                    :icon="listItem.icon"
-                    :time="listItem.remark"
-                    :variant="listItem.variant"
-                    @click="showStepInfo(listItem.id)"
-                />
-            </draggable>
-            </app-timeline>
+              <!-- draggable -->
+              <app-timeline>
+                <draggable
+                    v-model="stepList"
+                    class="list-group list-group-flush cursor-move"
+                >
+                  <app-timeline-item
+                      v-for="listItem in stepList"
+                      :key="listItem.id"
+                      :title="listItem.name"
+                      :icon="listItem.icon"
+                      :time="listItem.remark"
+                      :variant="listItem.variant"
+                      @click="showStepInfo(listItem.id)"
+                  >
+                  </app-timeline-item>
+                </draggable>
+              </app-timeline>
             </b-card-code>
           </vue-perfect-scrollbar>
         </div>
@@ -67,7 +68,7 @@ import {
   BButton,
   BCardText,
   BDropdown,
-  BDropdownItem,
+  BDropdownItem, BFormCheckbox, BImg,
   BLink,
   BListGroup,
   BListGroupItem, VBModal
@@ -76,7 +77,7 @@ import BCardCode from "@core/components/b-card-code";
 import AppTimeline from "@core/components/app-timeline/AppTimeline";
 import AppTimelineItem from "@core/components/app-timeline/AppTimelineItem";
 import VuePerfectScrollbar from "vue-perfect-scrollbar";
-import  {getDebugerCase, getSuitCaseList,} from "@/views/apps/web-automation/web-test-suit/webDebugCaseList";
+import {getDebugerCase, getSuitCaseList,} from "@/views/apps/web-automation/web-test-suit/webDebugCaseList";
 import draggable from "vuedraggable";
 import {ref, watch} from "@vue/composition-api";
 import Ripple from "vue-ripple-directive";
@@ -106,6 +107,8 @@ export default {
     BDropdown,
     BDropdownItem,
     BCardText,
+    BFormCheckbox,
+    BImg,
 
     BAlert,
     BLink,
@@ -117,22 +120,23 @@ export default {
     draggable,
   },
 
-  setup(props,{ emit }) {
+  setup(props, {emit}) {
     const perfectScrollbarSettings = {
       maxScrollbarLength: 60,
     }
 
-    const {browserByOptions ,browserBy,stepList,showStep,caseId}= getDebugerCase()
+    const {browserByOptions, browserBy, stepList, showStep, caseId} = getDebugerCase()
 
-
-    console.log("bus事件回调"+showStep.value)
-    const debuggerStepsCase =() =>{
+    console.log("bus事件回调" + stepList.value)
+    console.log("bus事件回调" + showStep.value)
+    const debuggerStepsCase = () => {
       emit('close-left-sidebar')
       emit('update:show-case-info', true)
     }
 
     const showStepInfo = (stepId) => {
-      this.$emit('fetch-step-info-id', stepId)
+      console.log(stepId)
+      emit('fetch-step-info-id', stepId)
     }
 
     // const fetchCaseStepsCallBack = () =>{
@@ -145,18 +149,20 @@ export default {
     // }
 
     caseId.value = props.caseId;
-    const fetchCaseSteps = () =>{
-      store.dispatch("web-test-suits/fetchCaseSteps",caseId.value).then(
+    const fetchCaseSteps = () => {
+      store.dispatch("web-test-suits/fetchCaseSteps", caseId.value).then(
           response => {
             stepList.value = response.data.data;
-            console.log(stepList.value)
+            bus.$emit('getNewCardId',stepList)
           }
+      ).finally(
+
       )
     }
 
     fetchCaseSteps()
 
-    watch([showStep,caseId], () => {
+    watch([showStep, caseId], () => {
       fetchCaseSteps()
     }, {
       deep: true,

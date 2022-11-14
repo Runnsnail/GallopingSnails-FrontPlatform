@@ -21,87 +21,87 @@
           v-if="menu"
           @mouseleave="out2"
           @mouseover.capture="over2"
-          class="menuclass"
+          class="menuclass float"
       >
         <b-button
             v-ripple.400="'rgba(40, 199, 111, 0.15)'"
             variant="flat-success"
-            @click="addCaseStep('success','元素操作','ApertureIcon')"
+            @click="addCaseStep('success',operationName.ElementOperation,'ApertureIcon')"
         >
           <feather-icon icon="ApertureIcon" class="mr-50"/>
-          <span class="align-middle">元素操作</span>
+          <span class="align-middle">{{operationName.ElementOperation}}</span>
         </b-button>
         <b-button
             v-ripple.400="'rgba(40, 199, 111, 0.15)'"
             variant="flat-success"
-            @click="addCaseStep('success','验证操作','AnchorIcon')"
+            @click="addCaseStep('success',operationName.KeyboardOperation,'AnchorIcon')"
         >
           <feather-icon icon="AnchorIcon" class="mr-50"/>
-          <span class="align-middle">验证操作</span>
+          <span class="align-middle">{{operationName.KeyboardOperation}}</span>
         </b-button>
         <b-button
             v-ripple.400="'rgba(40, 199, 111, 0.15)'"
             variant="flat-primary"
-            @click="addCaseStep('primary','等待操作','LoaderIcon')"
+            @click="addCaseStep('primary',operationName.WatingOperation,'LoaderIcon')"
         >
           <feather-icon icon="LoaderIcon" class="mr-50"/>
-          <span class="align-middle">等待操作</span>
+          <span class="align-middle">{{ operationName.WatingOperation }}</span>
         </b-button>
         <b-button
             v-ripple.400="'rgba(40, 199, 111, 0.15)'"
             variant="flat-primary"
-            @click="addCaseStep('primary','JS操作','BellIcon')"
+            @click="addCaseStep('primary',operationName.JSOperation,'BellIcon')"
         >
           <feather-icon icon="BellIcon" class="mr-50"/>
-          <span class="align-middle">JS操作</span>
+          <span class="align-middle">{{ operationName.JSOperation }}</span>
         </b-button>
         <b-button
             v-ripple.400="'rgba(40, 199, 111, 0.15)'"
             variant="flat-warning"
-            @click="addCaseStep('warning','浏览器操作','AwardIcon')"
+            @click="addCaseStep('warning',operationName.BrowserOperation,'AwardIcon')"
         >
           <feather-icon icon="AwardIcon" class="mr-50"/>
-          <span class="align-middle">浏览器操作</span>
+          <span class="align-middle">{{ operationName.BrowserOperation }}</span>
         </b-button>
         <b-button
             v-ripple.400="'rgba(40, 199, 111, 0.15)'"
             variant="flat-warning"
-            @click="addCaseStep('warning','Cooker操作','CastIcon')"
+            @click="addCaseStep('warning',operationName.CookerOperation,'CastIcon')"
         >
           <feather-icon icon="CastIcon" class="mr-50"/>
-          <span class="align-middle">Cooker操作</span>
+          <span class="align-middle">{{ operationName.CookerOperation }}</span>
         </b-button>
         <b-button
             v-ripple.400="'rgba(40, 199, 111, 0.15)'"
             variant="flat-danger"
-            @click="addCaseStep('danger','文件操作','ClipboardIcon')"
+            @click="addCaseStep('danger',operationName.FileOperation,'ClipboardIcon')"
         >
           <feather-icon icon="ClipboardIcon" class="mr-50"/>
-          <span class="align-middle">文件操作</span>
+          <span class="align-middle">{{ operationName.FileOperation }}</span>
         </b-button>
         <b-button
             v-ripple.400="'rgba(40, 199, 111, 0.15)'"
             variant="flat-danger"
-            @click="addCaseStep('danger','鼠标操作','NavigationIcon')"
+            @click="addCaseStep('danger',operationName.MouseOperation,'NavigationIcon')"
         >
           <feather-icon icon="NavigationIcon" class="mr-50"/>
-          <span class="align-middle">鼠标操作</span>
+          <span class="align-middle">{{ operationName.MouseOperation }}</span>
         </b-button>
         <b-button
             v-ripple.400="'rgba(40, 199, 111, 0.15)'"
             variant="flat-info"
-            @click="addCaseStep('info','弹窗操作','SunriseIcon')"
+            @click="addCaseStep('info',operationName.AlterOperation,'SunriseIcon')"
         >
           <feather-icon icon="SunriseIcon" class="mr-50"/>
-          <span class="align-middle">弹窗操作</span>
+          <span class="align-middle">{{ operationName.AlterOperation }}</span>
         </b-button>
         <b-button
             v-ripple.400="'rgba(40, 199, 111, 0.15)'"
             variant="flat-info"
-            @click="addCaseStep('info','场景导入','LayersIcon')"
+            @click="addCaseStep('info',operationName.ScenarioOperation,'LayersIcon')"
         >
           <feather-icon icon="LayersIcon" class="mr-50"/>
-          <span class="align-middle">场景导入</span>
+          <span class="align-middle">{{ operationName.ScenarioOperation }}</span>
         </b-button>
       </div>
     </div>
@@ -161,25 +161,22 @@ export default {
 
   setup(props){
 
-    const {showFlag,newCardID} = getDebugerCase();
+    const {showFlag,newCardID,operationName} = getDebugerCase();
 
     const addCaseStep = (paramVariant,name,paramIcon) => {
       store.dispatch('web-test-suits/addCaseStep', {
         variant:paramVariant,
         name:name,
         icon:paramIcon,
-        isEnable:1,
-        actionType:"uiAction",
+        isEnable:true,
+        actionType:name,
         remark:"Please enter the remarks:......",
         testcaseId:props.caseId,
       }).then(response => {
         newCardID.value = response.data.data
         bus.$emit('getNewCardId',newCardID)
-        console.log("response.data.data"+response.data.data)
-        console.log("newCardId.value "+newCardID.value )
           }
       ).finally(()=>{
-          console.log("bus事件"+showFlag.value)
           bus.$emit('showStepIn')
       })
     }
@@ -187,6 +184,7 @@ export default {
     return{
       addCaseStep,
       showFlag,
+      operationName,
     }
 
   },
@@ -209,7 +207,6 @@ export default {
     onRefresh() {
       // window.location.reload();
       setTimeout((res) => {
-        console.log(res);
         this.isLoading = false;
       }, 1000);
     },
@@ -250,7 +247,7 @@ export default {
         this.$refs.fu.style.left = this.xPum + "px";
         this.$refs.fu.style.top = this.yPum + "px";
         this.left = this.xPum/2 + 100;
-        this.top = this.yPum - 500;
+        this.top = this.yPum - 1160;
         // }
         //阻止页面的滑动默认事件
         document.addEventListener(

@@ -101,6 +101,7 @@
                   :alt="`${product.name}-${product.id}`"
                   fluid
                   class="card-img-top"
+                  size="sm"
                   :src="require('@/assets/images/pages/eCommerce/projectLogo.png')"
               />
             </b-link>

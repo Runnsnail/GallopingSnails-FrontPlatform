@@ -22,17 +22,18 @@
     <vue-perfect-scrollbar
         :settings="perfectScrollbarSettings"
         class="email-scroll-area scroll-area"
+        style="padding-left: 0px; padding-right: 0px;"
     >
-      <h1>
-        我是浏览器
-      </h1>
+      <div class="novpn">
+      <b-embed type="iframe"  aspect="16by9" src="http://116.62.219.238:7903/" allowfullscreen/>
+      </div>
     </vue-perfect-scrollbar>
   </div>
 </template>
 
 <script>
 import {
-  BDropdown, BDropdownItem, BRow, BCol, BBadge, BCard, BLink,
+  BDropdown, BDropdownItem, BRow, BCol, BBadge, BCard, BLink, BEmbed,
 } from 'bootstrap-vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import { ref, watch } from '@vue/composition-api'
@@ -49,6 +50,8 @@ export default {
     BBadge,
     BCard,
     BLink,
+
+    BEmbed,
 
     // 3rd Party
     VuePerfectScrollbar,

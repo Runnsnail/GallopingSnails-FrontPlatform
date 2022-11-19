@@ -12,6 +12,8 @@ import ProjectStoreModule from "@/views/apps/web-automation/ProjectStoreModule";
 import WebStoreModule from "@/views/apps/web-automation/web-test-case/webStoreModule"
 import webStoreModule from "@/views/apps/web-automation/web-test-case/webStoreModule";
 import webTestSuitStore from "@/views/apps/web-automation/web-test-suit/webTestSuitStore";
+import webScenarioModule from "@/views/apps/web-automation/web-case-scenario-step/webScenarioModule";
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -26,6 +28,7 @@ export default new Vuex.Store({
     'web-automation': ProjectStoreModule,
     'app-ecommerce': ecommerceStoreModule,
     'web-element':WebStoreModule,
+    'web-scenario':webScenarioModule,
   },
   strict: process.env.DEV,
 })

@@ -136,7 +136,7 @@ export default {
   data() {
     return {
       left: 820,
-      top: 65,
+      top: 55,
       menu: false,
       isLoading: false,
       flags: false, //控制使用

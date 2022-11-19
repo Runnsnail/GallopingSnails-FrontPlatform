@@ -61,8 +61,69 @@
           </b-form-group>
         </b-col>
 
+        <!-- Browser Operations -->
+        <b-col cols="6" v-show="stepObject.actionType===operationName.BrowserOperation">
+          <b-form-group
+              label-for="browser"
+              label="Browser Operations (select operation) "
+          >
+            <b-form-select
+                id="browser"
+                v-model="stepObject.action"
+                :options="browserOptions"
+            />
+<!--            <v-select-->
+<!--                id="browser"-->
+<!--                v-model="stepObject.action"-->
+<!--                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"-->
+<!--                label="title"-->
+<!--                :options="browserOptions"-->
+<!--            />-->
+          </b-form-group>
+        </b-col>
+
+        <!-- URL地址 -->
+        <b-col
+            md="6" xl="4" v-show="stepObject.action==='打开URL'"
+        >
+          <b-form-group
+              label="URL地址"
+              label-for="urlAddress"
+          >
+            <validation-provider
+                #default="{ errors }"
+                name="URL"
+                rules="required|url"
+            >
+              <b-form-input
+                  id="urlAddress"
+                  v-model="stepObject.optionData"
+                  :state="errors.length > 0 ? false:null"
+                  placeholder="https://www.baidu.com/"
+              />
+              <small class="text-danger">{{ errors[0] }}</small>
+            </validation-provider>
+          </b-form-group>
+        </b-col>
+
+        <!-- 根据title进行窗口切换 -->
+        <b-col
+            md="6" xl="4" v-show="stepObject.action==='根据title进行窗口切换'"
+        >
+          <b-form-group
+              label="title name"
+              label-for="urlAddress"
+          >
+            <b-form-input
+                id="urlAddress"
+                v-model="stepObject.optionData"
+                placeholder="Title 名称..."
+            />
+          </b-form-group>
+        </b-col>
+
         <!-- Action -->
-        <b-col cols="6">
+        <b-col cols="6" v-show="stepObject.actionType!==operationName.BrowserOperation||stepObject.actionType!==operationName.CookerOperation">
           <b-form-group
               label-for="action"
               label="Action (select operation) "
@@ -89,6 +150,24 @@
           />
         </b-col>
 
+        <!-- cooker -->
+        <b-col
+            cols="6" v-show="stepObject.actionType===operationName.CookerOperation"
+        >
+          <b-form-group
+              label="Add Cooker"
+              label-for="cooker"
+          >
+            <v-select
+                id="action"
+                v-model="stepObject.action"
+                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                label="title"
+                :options="cookerPotions"
+            />
+          </b-form-group>
+        </b-col>
+
         <!-- wating -->
         <b-col
             cols="3"
@@ -99,7 +178,7 @@
           >
             <v-select
                 id="action"
-                v-model="watie"
+                v-model="stepObject.optionData"
                 :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                 label="title"
                 :options="watingTimes"
@@ -107,33 +186,35 @@
           </b-form-group>
         </b-col>
         <!-- Operation Object -->
-        <b-col md="6" xl="4">
+        <b-col md="6" xl="4" v-show="stepObject.actionType!==operationName.BrowserOperation||stepObject.actionType!==operationName.CookerOperation">
           <b-form-group
               label-for="operationObject"
               label="Operation Object"
           >
-            <v-select
+            <b-form-select
                 id="operationObject"
-                v-model="stepObject.pageId"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                label="title"
-                :options="countryOption"
+                v-model="pageType"
+                :options="pageOption"
             />
+<!--            <v-select-->
+<!--                id="operationObject"-->
+<!--                v-model="stepObject.pageId"-->
+<!--                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"-->
+<!--                :options="pageOption"-->
+<!--            />-->
           </b-form-group>
         </b-col>
 
         <!-- Operation element -->
-        <b-col md="6" xl="4" v-show="stepObject.pageId!=null">
+        <b-col md="6" xl="4" v-show="pageType!=null&&stepObject.actionType!==operationName.BrowserOperation">
           <b-form-group
-              label-for="operationObject"
+              label-for="operationElement"
               label="Operation element"
           >
-            <v-select
-                id="operationObject"
-                v-model="stepObject.elementId"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                label="title"
-                :options="countryOption"
+            <b-form-select
+                id="operationElement"
+                v-model="elementName"
+                :options="elementOption"
             />
           </b-form-group>
         </b-col>
@@ -142,10 +223,19 @@
         <b-col cols="12" v-show="stepObject.action==='输入'">
           <label for="textarea-default">Textarea</label>
           <b-form-textarea
-              v-model="text"
+              v-model="stepObject.optionData"
               id="textarea-default"
               placeholder="Textarea"
               rows="2"
+          />
+        </b-col>
+
+        <!-- CodeEdit -->
+        <b-col cols="12" v-show="stepObject.action==='添加cookie信息'">
+          <label for="codeArea-default">CodeEdit</label>
+          <pre
+              v-model="stepObject.optionData"
+              id="codeArea-default"
           />
         </b-col>
 
@@ -175,7 +265,18 @@
 
 <script>
 import {
-  BButton, BForm, BFormGroup, BFormInput, BRow, BCol, BCard, BFormTextarea, BFormSpinbutton, BImg, BFormCheckbox,
+  BButton,
+  BForm,
+  BFormGroup,
+  BFormInput,
+  BRow,
+  BCol,
+  BCard,
+  BFormTextarea,
+  BFormSpinbutton,
+  BImg,
+  BFormCheckbox,
+  BFormSelect,
 } from 'bootstrap-vue'
 import vSelect from 'vue-select'
 import flatPickr from 'vue-flatpickr-component'
@@ -186,6 +287,9 @@ import Cleave from 'vue-cleave-component'
 import 'cleave.js/dist/addons/cleave-phone.us'
 import {getStepInformation} from "@/views/apps/web-automation/web-case-scenario-step/webScenarioStep";
 import {getDebugerCase} from "@/views/apps/web-automation/web-test-suit/webDebugCaseList";
+import {ValidationObserver, ValidationProvider} from "vee-validate";
+import store from "@/store";
+import {watch} from "@vue/composition-api";
 
 export default {
   components: {
@@ -198,21 +302,25 @@ export default {
     BCard,
     BFormCheckbox,
     BFormTextarea,
+    ValidationProvider,
+    ValidationObserver,
 
 
     vSelect,
     flatPickr,
     Cleave,
     BFormSpinbutton,
+    BFormSelect,
   },
   directives: {
     Ripple,
   },
+
   props: {
     stepObject: {
       type: Object,
       required: true,
-    },
+    }
   },
   data() {
     return {
@@ -228,13 +336,47 @@ export default {
     }
 
     const {operationName} = getDebugerCase();
-    const {watingTimes, watie, actionPotions,} = getStepInformation();
+    const {watingTimes, watie, actionPotions,cookerPotions, pageType, elementName,browserOptions,pageOption,elementOption} = getStepInformation();
+
+
+    const fetchElementsList = (param) => {
+      store.dispatch('web-scenario/fetchElementsList',param)
+          .then(response => {
+            // console.log(response)
+            elementOption.value = response.data.data
+          })
+    }
+
+    const fetchPageNamesList = () => {
+      store.dispatch('web-scenario/fetchPageNamesList')
+          .then(response => {
+            // console.log(response)
+            pageOption.value = response.data.data
+          })
+    }
+
+    watch(pageType, () => {
+      console.log("pageType:  "+pageType.value)
+      fetchElementsList(pageType.value)
+    }, {
+      deep: true,
+    })
+
+    fetchPageNamesList()
     return {
       saveStep,
       watingTimes,
       watie,
+      pageType,
+      elementName,
       actionPotions,
+      cookerPotions,
       operationName,
+      browserOptions,
+      pageOption,
+      elementOption,
+
+      fetchElementsList,
     }
   },
   methods: {

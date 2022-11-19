@@ -135,7 +135,6 @@ export default {
     }
 
     const showStepInfo = (stepId) => {
-      console.log(stepId)
       emit('fetch-step-info-id', stepId)
     }
 

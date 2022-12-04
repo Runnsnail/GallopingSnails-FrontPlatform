@@ -435,7 +435,7 @@
               type="reset"
               class="mt-1"
               variant="outline-secondary"
-              @click="resetForm"
+              @click="nextSeting"
           >
             Setting
           </b-button>

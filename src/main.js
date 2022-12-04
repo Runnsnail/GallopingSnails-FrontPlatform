@@ -23,7 +23,10 @@ import '@/libs/tour'
 import 'element-ui/lib/theme-chalk/index.css';
 // Axios Mock Adapter
 import '@/@fake-db/db'
-
+// VueCodeMirror
+import VueCodeMirror from 'vue-codemirror';
+import 'codemirror/lib/codemirror.css';
+Vue.use(VueCodeMirror);
 // BSV Plugin Registration
 Vue.use(ToastPlugin)
 Vue.use(ModalPlugin)

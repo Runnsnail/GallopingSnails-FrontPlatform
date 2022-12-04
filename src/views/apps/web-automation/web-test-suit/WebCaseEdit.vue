@@ -47,6 +47,7 @@ import bus from "@/views/apps/web-automation/bus";
 import store from '@/store'
 import {getDebugerCase} from "@/views/apps/web-automation/web-test-suit/webDebugCaseList";
 import WebLogMessage from "@/views/apps/web-automation/web-test-suit/WebLogMessage";
+import {useWebFiltersPages} from "@/views/apps/web-automation/web-test-case/webFillterPage";
 
 
 
@@ -69,18 +70,18 @@ export default {
     const showCaseInfo = ref(false)
     // Left Sidebar Responsiveness
     const {mqShallShowLeftSidebar} = useResponsiveAppLeftSidebarVisibility()
+
     const perfectScrollbarSettings = {
       maxScrollbarLength: 150,
     }
 
-    const stepInfo = ref({})
+    const {stepInfo }= useWebFiltersPages()
 
     const fetchStepById = (param) => {
       store.dispatch('web-test-suits/fetchStepById', param).then(response =>
           stepInfo.value = response.data.data
       )
     }
-    console.log(stepInfo.value)
     const {route} = useRouter()
     const newCardID = getDebugerCase()
     const caseId = newCardID.value==null ? route.value.params.id:newCardID.value

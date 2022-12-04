@@ -1,4 +1,5 @@
 import axios from "@/libs/axios";
+import axiosIns from "@/libs/axios";
 
 export default {
     namespaced: true,
@@ -25,7 +26,13 @@ export default {
             })
         },
 
-
-
+        saveStepInformation(ctx,payload) {
+            return new Promise((resolve, reject) => {
+                axiosIns
+                    .post(`/StepUiNew/saveStepInformation`,payload)
+                    .then(response => resolve(response))
+                    .catch(error => reject(error))
+            })
+        },
 
     },}

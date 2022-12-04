@@ -40,10 +40,41 @@ export const useWebFiltersPages = () => {
 
     ]
 
+    const stepInfo = ref({
+        id: '',
+        name: '',
+        actionType: '',
+        action: '',
+        testcaseId: '',
+        counts: '',
+        waite: '',
+        pageId: '',
+        elementId: '',
+        type: '',
+        createBy: '',
+        createTime: '',
+        updateBy: '',
+        updateTime: '',
+        sort: '',
+        icon: '',
+        variant: '',
+        remark: '',
+        optionData: '',
+        page: {
+            text: '',
+            value: ''
+        },
+        element: {
+            text: '',
+            value: ''
+        },
+        enable: ''
+    })
 
     return {
         // Filter
         filter,
+        stepInfo,
         pageOptions,
         totalRows,
         projectPages,

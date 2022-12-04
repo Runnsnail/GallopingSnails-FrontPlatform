@@ -138,21 +138,13 @@ export default {
       emit('fetch-step-info-id', stepId)
     }
 
-    // const fetchCaseStepsCallBack = () =>{
-    //   store.dispatch("web-test-suits/fetchCaseSteps",newCardID.value).then(
-    //       response => {
-    //         stepList.value = response.data.data;
-    //         console.log(stepList.value)
-    //       }
-    //   )
-    // }
 
     caseId.value = props.caseId;
     const fetchCaseSteps = () => {
       store.dispatch("web-test-suits/fetchCaseSteps", caseId.value).then(
           response => {
             stepList.value = response.data.data;
-            bus.$emit('getNewCardId',stepList)
+            // bus.$emit('getNewCardId',stepList)
           }
       ).finally(
 

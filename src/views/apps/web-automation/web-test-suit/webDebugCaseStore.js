@@ -16,7 +16,6 @@ export default {
             })
         },
         deleteCase(ctx, caseId ) {
-            console.log(caseId)
             return new Promise((resolve, reject) => {
                 axiosIns
                     .delete(`/TestcaseUiNew/deleteCase/${caseId}`)

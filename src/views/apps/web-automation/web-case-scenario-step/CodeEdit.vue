@@ -24,7 +24,7 @@ export default {
 
   props: {
     jsonCode: {
-      default: ""
+      default: "'name':'value'"
     }
   },
 

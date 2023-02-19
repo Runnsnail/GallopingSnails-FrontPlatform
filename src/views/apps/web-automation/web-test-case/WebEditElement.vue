@@ -17,17 +17,17 @@ export const codeBasic = `
             class="mx-2 my-sm-1"
         >
 
-          <!-- Element action -->
+          <!-- Element name -->
           <b-col md="2">
             <b-form-group
-                label="Element action"
+                label="Element Name"
                 label-for="element-action"
             >
               <b-form-input
                   id="element-action"
                   v-model="pageElement.elementName"
                   type="text"
-                  placeholder="The drop-down menu"
+                  placeholder="登录"
               />
             </b-form-group>
           </b-col>
@@ -40,17 +40,22 @@ export const codeBasic = `
             >
               <b-dropdown
                   id="positioning-way"
+                  v-b-tooltip.hover.v-warning
+                  :title=pageElement.byType
                   v-ripple.400="'rgba(113, 102, 240, 0.15)'"
                   :text="pageElement.byType"
                   right
                   variant="outline-primary"
+                  class="vstack repeat-dropdown"
               >
                 <b-dropdown-item
                     v-for="actionOption in actionOptions"
                     :key="actionOption.value"
+                    transfer="true"
+                    :popper-append-to-body="false"
                     @click="pageElement.byType=actionOption.value"
                 >
-                  {{ actionOption.text }}
+                  {{ actionOption.text}}
                 </b-dropdown-item>
               </b-dropdown>
 <!--              <b-form-input-->
@@ -72,7 +77,7 @@ export const codeBasic = `
                   id="positioning"
                   v-model="pageElement.byValue"
                   type="text"
-                  placeholder="...class"
+                  placeholder="//*[@id=‘app’]/div[1]/div[1]/div[1]/ul/li[1]/a/h2"
               />
             </b-form-group>
           </b-col>
@@ -174,6 +179,8 @@ import Ripple from 'vue-ripple-directive'
 import BCardCode from "@core/components/b-card-code";
 import store from "@/store";
 import {useWebFiltersPages} from "@/views/apps/web-automation/web-test-case/webFillterPage";
+
+const {VBTooltip} = require("bootstrap-vue");
 export default {
   components: {
     BForm,
@@ -189,8 +196,10 @@ export default {
     BFormCheckbox,
   },
   directives: {
+    'b-tooltip': VBTooltip,
     Ripple,
   },
+
   props: {
     pageElements: {
       type: Array,
@@ -260,7 +269,9 @@ export default {
     initTrHeight() {
       this.trSetHeight(null)
       this.$nextTick(() => {
-        this.trSetHeight(this.$refs.form.scrollHeight)
+            if(this.$refs.form) {
+              this.trSetHeight(this.$refs.form.scrollHeight)
+            }
       })
       this.$forceUpdate()
     },
@@ -314,6 +325,15 @@ export default {
   overflow: hidden;
   transition: .35s height;
 }
+
+ .repeat-dropdown ::v-deep .dropdown-toggle {
+  width: 120px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+
 </style>
 `
 

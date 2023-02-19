@@ -53,6 +53,15 @@ export default {
             })
         },
 
+        saveCaseSteps(ctx, payload) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .post(`/StepUiNew/saveCaseSteps`,payload)
+                    .then(response => resolve(response))
+                    .catch(error => reject(error))
+            })
+        },
+
         fetchStepById(ctx, stepId) {
             return new Promise((resolve, reject) => {
                 axiosIns
@@ -66,6 +75,60 @@ export default {
             return new Promise((resolve, reject) => {
                 axiosIns
                     .get(`/StepUiNew/fetchCaseSteps/${caseId}`)
+                    .then(response => resolve(response))
+                    .catch(error => reject(error))
+            })
+        },
+
+        fetchCaseVariables(ctx, caseId) {
+            return new Promise((resolve, reject) => {
+                axiosIns
+                    .get(`/CaseVariable/fetchCaseVariables/${caseId}`)
+                    .then(response => resolve(response))
+                    .catch(error => reject(error))
+            })
+        },
+
+        debuggerStepsCase(ctx, payload) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .post(`/SeleniumGrid/setUpNode`,payload)
+                    .then(response => resolve(response))
+                    .catch(error => reject(error))
+            })
+        },
+
+        fetchSeleniumNode(ctx, payload) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .get(`/SeleniumNode/fetchById/${payload}`)
+                    .then(response => resolve(response))
+                    .catch(error => reject(error))
+            })
+        },
+
+        removeCaseVariables(ctx, payload) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .get(`/CaseVariable/remove/${payload}`)
+                    .then(response => resolve(response))
+                    .catch(error => reject(error))
+            })
+        },
+
+        saveCaseVariables(ctx, payload) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .post('/CaseVariable/save', {params: payload})
+                    .then(response => resolve(response))
+                    .catch(error => reject(error))
+            })
+        },
+
+        deleteStep(ctx, payload) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .delete(`/StepUiNew/deleteStep/${payload}`)
                     .then(response => resolve(response))
                     .catch(error => reject(error))
             })

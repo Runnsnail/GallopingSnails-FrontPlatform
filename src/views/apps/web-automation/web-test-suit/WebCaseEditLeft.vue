@@ -3,6 +3,9 @@
     <div class="sidebar">
       <div class="sidebar-content email-app-sidebar">
         <div class="email-app-menu">
+          <div>
+            <sidebar-variable :case-variable-lists="caseVariableList" />
+          </div>
           <div class="demo-inline-spacing">
             <b-button
                 v-ripple.400="'rgba(255, 255, 255, 0.15)'"
@@ -24,17 +27,28 @@
               <b-dropdown-item
                   v-for="browser in browserByOptions"
                   :key="browser.value"
-                  @click="browserBy=browser"
+                  @click="browserBy=browser;fetchSeleniumNode(browser.text)"
               >
                 {{ browser.text }}
               </b-dropdown-item>
             </b-dropdown>
           </div>
+          <div class="demo-inline-spacing">
+            <b-button
+                v-b-toggle.variable-sidebar
+                v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+                variant="outline-primary"
+                pill
+                style="margin-left: 50px"
+            >
+              Show Variable
+            </b-button>
+          </div>
           <vue-perfect-scrollbar
               :settings="perfectScrollbarSettings"
               class="sidebar-menu-list scroll-area"
           >
-            <b-card-code title="Test Steps">
+            <b-card title="Test Steps">
               <!-- draggable -->
               <app-timeline>
                 <draggable
@@ -44,16 +58,26 @@
                   <app-timeline-item
                       v-for="listItem in stepList"
                       :key="listItem.id"
-                      :title="listItem.name"
                       :icon="listItem.icon"
-                      :time="listItem.remark"
                       :variant="listItem.variant"
-                      @click="showStepInfo(listItem.id)"
                   >
+                  <div class="d-flex align-items-start flex-sm-row flex-column flex-wrap justify-content-between mb-1 mb-sm-50">
+                    <h6  @click="showStepInfo(listItem.id)">{{listItem.name}}</h6>
+                    <b-badge
+                        pill
+                        variant="light-primary"
+                        @click="deleteStep(listItem.id)"
+                    >
+                      Delete
+                    </b-badge>
+                  </div>
+                  <div>
+                      <span class="text-muted">{{ listItem.remark }}</span>
+                    </div>
                   </app-timeline-item>
                 </draggable>
               </app-timeline>
-            </b-card-code>
+            </b-card>
           </vue-perfect-scrollbar>
         </div>
       </div>
@@ -66,10 +90,13 @@ import {
   BAlert,
   BBadge,
   BButton,
+  BCard,
   BCardText,
   BDropdown,
+  BSidebar,
   BDropdownItem, BFormCheckbox, BImg,
   BLink,
+  VBToggle,
   BListGroup,
   BListGroupItem, VBModal
 } from 'bootstrap-vue'
@@ -83,11 +110,14 @@ import {ref, watch} from "@vue/composition-api";
 import Ripple from "vue-ripple-directive";
 import bus from "@/views/apps/web-automation/bus";
 import store from "@/store";
+import SidebarVariable from "@/views/apps/web-automation/web-test-suit/SidebarVariable";
+const {reactive} = require("@vue/composition-api");
 
 export default {
 
   directives: {
     'b-modal': VBModal,
+    'b-toggle': VBToggle,
     Ripple,
   },
 
@@ -99,8 +129,10 @@ export default {
   },
 
   components: {
+    SidebarVariable,
     // BSV
     BButton,
+    BCard,
     BListGroup,
     BListGroupItem,
     BBadge,
@@ -115,29 +147,65 @@ export default {
     BCardCode,
     AppTimeline,
     AppTimelineItem,
+    BSidebar,
     VuePerfectScrollbar,
 
     draggable,
+  },
+
+  data(){
+    return{
+      caseVariableList:[]
+    }
+  },
+
+  mounted() {
+    this.fetchCaseVariables()
   },
 
   setup(props, {emit}) {
     const perfectScrollbarSettings = {
       maxScrollbarLength: 60,
     }
+    const isVariableSidebarActive = ref(false)
+    const {browserByOptions, browserBy, stepList, showStep, caseId,seleniumNode} = getDebugerCase()
 
-    const {browserByOptions, browserBy, stepList, showStep, caseId} = getDebugerCase()
+    const fetchSeleniumNode = (param) => {
 
-    console.log("bus事件回调" + stepList.value)
-    console.log("bus事件回调" + showStep.value)
+      store.dispatch('web-test-suits/fetchSeleniumNode', param).then(response => {
+        seleniumNode.value = response.data.data
+        bus.$emit('getSeleniumNode',seleniumNode)
+     })
+    }
+
     const debuggerStepsCase = () => {
       emit('close-left-sidebar')
       emit('update:show-case-info', true)
+      bus.$emit('getStepLogMessages',caseId)
+      store.dispatch("web-test-suits/debuggerStepsCase", {
+          caseId: caseId.value,
+          browser:browserBy.value.value,
+      }).then(
+          response => {
+            bus.$emit('getStepLogMessages',caseId)
+          }
+      ).finally(
+          bus.$emit('getStepLogMessages',caseId),
+      )
     }
 
     const showStepInfo = (stepId) => {
       emit('fetch-step-info-id', stepId)
     }
 
+
+    const deleteStep = (param) => {
+
+          store.dispatch("web-test-suits/deleteStep", param).then(
+              response => {
+                fetchCaseSteps()
+              }
+          )}
 
     caseId.value = props.caseId;
     const fetchCaseSteps = () => {
@@ -151,7 +219,23 @@ export default {
       )
     }
 
+    const saveCaseSteps = (param) => {
+
+      store.dispatch("web-test-suits/saveCaseSteps", param).then(
+          response => {
+          }
+      )
+    }
+
     fetchCaseSteps()
+    // fetchCaseVariables()
+
+    watch(stepList, () => {
+      saveCaseSteps(stepList.value)
+    }, {
+      deep: true,
+    })
+
 
     watch([showStep, caseId], () => {
       fetchCaseSteps()
@@ -164,10 +248,27 @@ export default {
       browserBy,
       showStep,
       stepList,
+      isVariableSidebarActive,
 
       debuggerStepsCase,
+      fetchSeleniumNode,
       showStepInfo,
+      deleteStep,
     }
+  },
+
+  methods:{
+     fetchCaseVariables(){
+      store.dispatch("web-test-suits/fetchCaseVariables", this.caseId).then(
+          response => {
+            this.caseVariableList = response.data.data;
+          }
+      )
+    }
+  },
+
+  destroyed() {
+    bus.$emit('getCaseVariableLists', this.caseVariableList)
   },
 
 }

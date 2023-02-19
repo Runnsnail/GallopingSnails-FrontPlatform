@@ -32,5 +32,14 @@ export default {
             })
         },
 
+        showCaseLogs(ctx,caseId) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .get(`/stepUiLog/listByCaseId/${caseId}`)
+                    .then(response => resolve(response))
+                    .catch(error => reject(error))
+            })
+        },
+
     },
 }

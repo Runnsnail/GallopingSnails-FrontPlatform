@@ -21,13 +21,14 @@
       <tab-content title="Advanced Settings"  icon="feather icon-monitor">
         <web-case-setting  @next-step="formWizardNextStep"/>
       </tab-content>
+
     </form-wizard>
   <web-case-scene-ball :case-id="caseId"/>
   </div>
 </template>
 
 <script>
-import {BAlert, BCol, BDropdown, BDropdownItem,BLink, BRow} from 'bootstrap-vue'
+import {BAlert,BButton, BCol, BDropdown, BDropdownItem,BLink, BRow} from 'bootstrap-vue'
 import WebCaseSceneBall from "@/views/apps/web-automation/web-test-suit/WebCaseSceneBall";
 import WebDebugBrowerMessage from "@/views/apps/web-automation/web-test-suit/WebDebugBrowerMessage";
 import WebCaseSetting from "@/views/apps/web-automation/web-case-setting/WebCaseSetting";
@@ -49,6 +50,7 @@ export default {
 
     FormWizard,
     TabContent,
+    BButton,
     BRow,
     BCol,
     // eslint-disable-next-line vue/no-unused-components

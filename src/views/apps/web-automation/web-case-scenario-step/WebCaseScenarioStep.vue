@@ -252,7 +252,7 @@
             md="6" xl="4" v-show="stepObject.action==='js给指定元素value赋值'"
         >
           <b-form-group
-              label="指定元素 (name)"
+              label="指定元素 (value)"
               label-for="iframeName"
           >
             <b-form-input
@@ -329,7 +329,7 @@
 
         <!-- CodeVariable -->
         <b-col cols="4"
-               v-show="stepObject.action==='添加cookie信息'"
+               v-show="stepObject.action==='添加cookies信息'"
         >
           <b-card
               no-body
@@ -349,9 +349,9 @@
 
         <!-- CodeEdit -->
         <b-col cols="8"
-               v-show="stepObject.action==='添加cookie信息'"
+               v-show="stepObject.action==='添加cookies信息'"
         >
-          <code-edit id="codeEdit-default" :json-code="stepObject.optionData=(stepObject.actionType===operationName.CookerOperation)?stepObject.optionData:'1'"/>
+          <code-edit id="codeEdit-default" :json-code="stepObject.optionData===null?'1':stepObject.optionData"/>
         </b-col>
 
         <!-- Operation Object -->
@@ -472,7 +472,9 @@ import {ValidationObserver, ValidationProvider} from "vee-validate";
 import store from "@/store";
 import {ref, watch} from "@vue/composition-api";
 import CodeEdit from "@/views/apps/web-automation/web-case-scenario-step/CodeEdit";
-
+import {
+  required, email, confirmed, url, between, alpha, integer, password, min, digits, alphaDash, length,
+} from '@validations'
 export default {
 
   props: {
@@ -510,37 +512,6 @@ export default {
   },
 
   setup(props, {emit}) {
-
-    // const stepData  = JSON.parse(JSON.stringify(props.stepObject))
-    //
-    // watch(props.stepObject,()=>{
-    //   const stepData  = JSON.parse(JSON.stringify(props.stepObject))
-    //   console.log(stepData)
-    // })
-    //
-    // const iniStep = {
-    //   id: props.stepObject.id,
-    //   name: props.stepObject.name,
-    //   actionType: props.stepObject.actionType,
-    //   action: props.stepObject.action,
-    //   waite:props.stepObject.waite,
-    //   counts:props.stepObject.counts,
-    //   pageId: props.stepObject.page.value,
-    //   elementId: props.stepObject.element.value,
-    //   remark: props.stepObject.remark,
-    //   optionData: props.stepObject.optionData,
-    //     enable: props.stepObject.enable
-    // }
-    //
-    //
-    // console.log(props.stepObject)
-    //
-    //
-    // const saveStep = () => {
-    //   console.log(iniStep)
-    //   store.dispatch('web-scenario/saveStepInformation', iniStep)
-    //       .then(response => {})
-    // }
 
     const nextSeting = () => {
       emit('next-step');
@@ -631,7 +602,6 @@ export default {
   methods: {
 
     resetForm() {
-      console.log(this.stepObject)
       this.localOptions = JSON.parse(JSON.stringify(this.stepObject))
     },
 

@@ -42,10 +42,10 @@
         <b-button
             v-ripple.400="'rgba(40, 199, 111, 0.15)'"
             variant="flat-primary"
-            @click="addCaseStep('primary',operationName.WatingOperation,'LoaderIcon')"
+            @click="addCaseStep('primary',operationName.ApiOperation,'LoaderIcon')"
         >
           <feather-icon icon="LoaderIcon" class="mr-50"/>
-          <span class="align-middle">{{ operationName.WatingOperation }}</span>
+          <span class="align-middle">{{ operationName.ApiOperation }}</span>
         </b-button>
         <b-button
             v-ripple.400="'rgba(40, 199, 111, 0.15)'"

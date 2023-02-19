@@ -10,6 +10,8 @@ export const getDebugerCase =() =>{
 
     const stepList = ref([])
 
+    const caseVariableLists = ref([])
+
     const showFlag = ref( true);
 
     const newCardID = ref(null)
@@ -19,7 +21,7 @@ export const getDebugerCase =() =>{
             ElementOperation : "元素操作",
             CookerOperation : "Cooker操作",
             KeyboardOperation : "键盘操作",
-            WatingOperation : "等待操作",
+            ApiOperation : "Api操作",
             JSOperation : "JS操作",
             BrowserOperation : "浏览器操作",
             FileOperation : "文件操作",
@@ -57,6 +59,7 @@ export const getDebugerCase =() =>{
 
     const projectNames = ref([])
 
+    const seleniumNode = ref(null)
 
     const browserBy = ref({ text: '本地调试', value: '本地调试' })
 
@@ -72,7 +75,9 @@ export const getDebugerCase =() =>{
         teamNames,
         projectNames,
         status,
+        caseVariableLists,
         operationName,
+        seleniumNode,
     }
 }
 

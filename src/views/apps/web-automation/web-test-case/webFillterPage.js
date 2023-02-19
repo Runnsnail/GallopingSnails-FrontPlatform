@@ -29,14 +29,14 @@ export const useWebFiltersPages = () => {
     const bodyTextVariant = 'semi-dark'
 
     const actionOptions = [
-        {text: 'id', value: 'id'},
-        {text: 'name', value: 'name'},
-        {text: 'className', value: 'className'},
-        {text: 'tagName', value: 'tagName'},
-        {text: 'linkText', value: 'linkText'},
-        {text: 'partial link', value: 'partial link'},
-        {text: 'Xpath', value: 'Xpath'},
-        {text: 'cssSelector', value: 'cssSelector'},
+        {text: 'id', value: 'SelectorType.ID'},
+        {text: 'name', value: 'SelectorType.NAME'},
+        {text: 'className', value: 'SelectorType.CLASSNAME'},
+        {text: 'tagName', value: 'SelectorType.TAG'},
+        {text: 'linkText', value: 'SelectorType.LINK'},
+        {text: 'partial link', value: 'SelectorType.PARTIALLINKTEXT'},
+        {text: 'Xpath', value: 'SelectorType.XPATH'},
+        {text: 'cssSelector', value: 'SelectorType.CSS'},
 
     ]
 

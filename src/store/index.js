@@ -13,6 +13,7 @@ import WebStoreModule from "@/views/apps/web-automation/web-test-case/webStoreMo
 import webStoreModule from "@/views/apps/web-automation/web-test-case/webStoreModule";
 import webTestSuitStore from "@/views/apps/web-automation/web-test-suit/webTestSuitStore";
 import webScenarioModule from "@/views/apps/web-automation/web-case-scenario-step/webScenarioModule";
+import webDebugCaseStore from "@/views/apps/web-automation/web-test-suit/webDebugCaseStore";
 import CodeEdit from "@/views/apps/web-automation/web-case-scenario-step/CodeEdit";
 
 Vue.use(Vuex)
@@ -25,6 +26,7 @@ export default new Vuex.Store({
     verticalMenu,
     webAuto,
     'web-test-case': webStoreModule,
+    'web-debug-case':webDebugCaseStore,
     'web-test-suits': webTestSuitStore,
     'web-automation': ProjectStoreModule,
     'app-ecommerce': ecommerceStoreModule,

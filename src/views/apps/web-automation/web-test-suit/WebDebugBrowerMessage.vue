@@ -25,7 +25,7 @@
             v-ripple.400="'rgba(113, 102, 240, 0.15)'"
             v-b-toggle.sidebar-right
             size="17"
-            @click="isLogSidebarActive = true"
+            @click="isLogSidebarActive = true;showLog"
         />
         <b-sidebar
             id="sidebar-right"
@@ -61,6 +61,7 @@ import { ref} from '@vue/composition-api'
 import Ripple from "vue-ripple-directive";
 import SidebarLog from "@/views/apps/web-automation/web-test-suit/SidebarLog";
 import {getStepInformation} from "@/views/apps/web-automation/web-case-scenario-step/webScenarioStep";
+import bus from "@/views/apps/web-automation/bus";
 
 const {nextTick} = require("@vue/composition-api");
 
@@ -103,6 +104,10 @@ export default {
     const isLogSidebarActive = ref(false)
     const {seleniumNode} = getStepInformation();
 
+    const showLog = () =>{
+      bus.$emit("showLog",isLogSidebarActive.toString())
+    }
+
     return {
 
       // UI
@@ -110,6 +115,7 @@ export default {
       showWholeThread,
       isLogSidebarActive,
       seleniumNode,
+      showLog,
     }
   },
 }

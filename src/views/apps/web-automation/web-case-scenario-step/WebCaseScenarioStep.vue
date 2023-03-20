@@ -511,6 +511,7 @@ export default {
     Ripple,
   },
 
+
   setup(props, {emit}) {
 
     const nextSeting = () => {

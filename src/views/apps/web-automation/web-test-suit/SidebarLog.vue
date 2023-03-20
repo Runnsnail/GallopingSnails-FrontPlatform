@@ -41,6 +41,7 @@ import AppCollapse from "@core/components/app-collapse/AppCollapse";
 import AppCollapseItem from "@core/components/app-collapse/AppCollapseItem";
 import ElImageViewer from 'element-ui/packages/image/src/image-viewer'
 import store from "@/store";
+import bus from "@/views/apps/web-automation/bus";
 import {ref,watch} from "@vue/composition-api";
 import {getStepInformation} from "@/views/apps/web-automation/web-case-scenario-step/webScenarioStep";
 
@@ -68,18 +69,18 @@ export default {
     },
   },
 
-  setup(props) {
+  setup() {
 
 
     const showTitleAndStatus = (param) =>{
       if(param.status===0){
-        return param.stepName + `           【成功 🎉】`
+        return param.stepName + `【成功 🎉】`
       }
       if(param.status===1){
-        return param.stepName + `           【失败 🎂】`
+        return param.stepName + `【失败 🎂】`
       }
       if(param.status===2){
-        return param.stepName + `           【跳过 🎊】`
+        return param.stepName + `【跳过 🎊】`
       }
     }
 
@@ -87,15 +88,16 @@ export default {
 
     const logList = ref([])
     const {caseId} = getStepInformation();
+    const showLog = ref(null)
     let param = ref(null)
 
-    const showLog = () => {
-      if(props.isLogSidebarActive){
-        showCaseLogs(caseId)
-      }
-    }
+    bus.$on('showLog', (data)=>{
+      showLog.value= data.value
+      console.log(showLog)
+    })
 
-    watch(caseId, () => {
+
+    watch([caseId,showLog], () => {
       param = caseId
       showCaseLogs(param)
     }, {
@@ -106,7 +108,6 @@ export default {
       store.dispatch("web-debug-case/showCaseLogs", param.value).then(
           response => {
             logList.value = response.data.data;
-            console.log(logList.value)
           }
       )
     }
@@ -133,7 +134,7 @@ export default {
   methods: {
      showImgViewer (param) {
       this.imgViewerVisible = true;
-      console.log(param )
+
       const m = (e) => {
         e.preventDefault()
       };

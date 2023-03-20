@@ -53,22 +53,6 @@
     </b-tab>
     <!--/ change password tab -->
 
-    <!-- info -->
-    <b-tab>
-
-      <!-- title -->
-      <template #title>
-        <feather-icon
-            icon="InfoIcon"
-            size="18"
-            class="mr-50"
-        />
-        <span class="font-weight-bold">错误处理</span>
-      </template>
-
-      <web-case-setting-error/>
-    </b-tab>
-
   </b-tabs>
   </div>
 </template>
@@ -77,11 +61,9 @@
 import {BTabs, BTab, BCol} from 'bootstrap-vue'
 import WebCaseSettingBefore from "@/views/apps/web-automation/web-case-setting/WebCaseSettingBefore";
 import WebCaseSettingAfter from "@/views/apps/web-automation/web-case-setting/WebCaseSettingAfter";
-import WebCaseSettingError from "@/views/apps/web-automation/web-case-setting/WebCaseSettingError";
 
 export default {
   components: {
-    WebCaseSettingError,
     WebCaseSettingAfter,
     WebCaseSettingBefore,
     BTabs,

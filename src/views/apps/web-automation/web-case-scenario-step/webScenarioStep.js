@@ -43,7 +43,11 @@ export const getStepInformation = () => {
 
     const caseId = ref(null)
 
-    const seleniumNode = ref(null)
+    const seleniumNode = ref({
+        browser:"Chrome",
+        id:1,
+        seleniumIp:"http://116.62.219.238:7901/"
+    })
 
     bus.$on('getStepLogMessages', (data)=>{
         caseId.value= data.value

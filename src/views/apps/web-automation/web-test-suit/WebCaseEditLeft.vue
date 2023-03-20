@@ -4,7 +4,7 @@
       <div class="sidebar-content email-app-sidebar">
         <div class="email-app-menu">
           <div>
-            <sidebar-variable :case-variable-lists="caseVariableList" />
+            <sidebar-variable :case-variable-lists="caseVariableList"/>
           </div>
           <div class="demo-inline-spacing">
             <b-button
@@ -61,17 +61,18 @@
                       :icon="listItem.icon"
                       :variant="listItem.variant"
                   >
-                  <div class="d-flex align-items-start flex-sm-row flex-column flex-wrap justify-content-between mb-1 mb-sm-50">
-                    <h6  @click="showStepInfo(listItem.id)">{{listItem.name}}</h6>
-                    <b-badge
-                        pill
-                        variant="light-primary"
-                        @click="deleteStep(listItem.id)"
-                    >
-                      Delete
-                    </b-badge>
-                  </div>
-                  <div>
+                    <div
+                        class="d-flex align-items-start flex-sm-row flex-column flex-wrap justify-content-between mb-1 mb-sm-50">
+                      <h6 @click="showStepInfo(listItem.id)">{{ listItem.name }}</h6>
+                      <b-badge
+                          pill
+                          variant="light-primary"
+                          @click="deleteStep(listItem.id)"
+                      >
+                        Delete
+                      </b-badge>
+                    </div>
+                    <div>
                       <span class="text-muted">{{ listItem.remark }}</span>
                     </div>
                   </app-timeline-item>
@@ -111,6 +112,7 @@ import Ripple from "vue-ripple-directive";
 import bus from "@/views/apps/web-automation/bus";
 import store from "@/store";
 import SidebarVariable from "@/views/apps/web-automation/web-test-suit/SidebarVariable";
+
 const {reactive} = require("@vue/composition-api");
 
 export default {
@@ -153,9 +155,9 @@ export default {
     draggable,
   },
 
-  data(){
-    return{
-      caseVariableList:[]
+  data() {
+    return {
+      caseVariableList: []
     }
   },
 
@@ -168,44 +170,47 @@ export default {
       maxScrollbarLength: 60,
     }
     const isVariableSidebarActive = ref(false)
-    const {browserByOptions, browserBy, stepList, showStep, caseId,seleniumNode} = getDebugerCase()
+    const {browserByOptions, browserBy, stepList, showStep, caseId, seleniumNode} = getDebugerCase()
 
     const fetchSeleniumNode = (param) => {
 
       store.dispatch('web-test-suits/fetchSeleniumNode', param).then(response => {
         seleniumNode.value = response.data.data
-        bus.$emit('getSeleniumNode',seleniumNode)
-     })
+        bus.$emit('getSeleniumNode', seleniumNode)
+      })
     }
 
     const debuggerStepsCase = () => {
       emit('close-left-sidebar')
       emit('update:show-case-info', true)
-      bus.$emit('getStepLogMessages',caseId)
+      bus.$emit('getStepLogMessages', caseId)
       store.dispatch("web-test-suits/debuggerStepsCase", {
-          caseId: caseId.value,
-          browser:browserBy.value.value,
+        caseId: caseId.value,
+        browser: browserBy.value.value,
       }).then(
           response => {
-            bus.$emit('getStepLogMessages',caseId)
+            bus.$emit('getStepLogMessages', caseId)
           }
       ).finally(
-          bus.$emit('getStepLogMessages',caseId),
+          bus.$emit('getStepLogMessages', caseId),
       )
     }
 
     const showStepInfo = (stepId) => {
-      emit('fetch-step-info-id', stepId)
+          emit('fetch-step-info-id', stepId),
+          bus.$emit('getStepLogMessages', caseId)
+          bus.$emit('getStepId', stepId)
     }
 
 
     const deleteStep = (param) => {
 
-          store.dispatch("web-test-suits/deleteStep", param).then(
-              response => {
-                fetchCaseSteps()
-              }
-          )}
+      store.dispatch("web-test-suits/deleteStep", param).then(
+          response => {
+            fetchCaseSteps()
+          }
+      )
+    }
 
     caseId.value = props.caseId;
     const fetchCaseSteps = () => {
@@ -257,8 +262,8 @@ export default {
     }
   },
 
-  methods:{
-     fetchCaseVariables(){
+  methods: {
+    fetchCaseVariables() {
       store.dispatch("web-test-suits/fetchCaseVariables", this.caseId).then(
           response => {
             this.caseVariableList = response.data.data;

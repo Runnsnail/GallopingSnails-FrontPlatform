@@ -29,16 +29,27 @@ export default {
         addSuits(ctx, payload) {
             return new Promise((resolve, reject) => {
                 axios
-                    .post(`/tTestsuiteUi/add`,{params: payload})
+                    .post(`/tTestsuiteUi/add`, payload)
                     .then(response => resolve(response))
                     .catch(error => reject(error))
             })
         },
 
+
+        updateSuiteTree(ctx, payload) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .post('/tTestsuiteUi/updateSuiteTree',  {treeList:payload})
+                    .then(response => resolve(response))
+                    .catch(error => reject(error))
+            })
+        },
+
+
         editSuits(ctx, payload) {
             return new Promise((resolve, reject) => {
                 axios
-                    .post('/tTestsuiteUi/edit', {params: payload})
+                    .post('/tTestsuiteUi/edit',  payload)
                     .then(response => resolve(response))
                     .catch(error => reject(error))
             })

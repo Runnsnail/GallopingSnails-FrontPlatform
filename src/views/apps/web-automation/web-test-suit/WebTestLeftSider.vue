@@ -67,7 +67,7 @@
                         @click="showCases(data.id)"
                     >
                       <span v-if="!data.isEdit">
-                        <b-avatar :variant="`light-success`" size="20"><feather-icon :icon="treeIcon.icon" /></b-avatar>
+                        <b-avatar :variant="`light-success`" size="20"><feather-icon :icon="treeIcon.icon"/></b-avatar>
                         {{ node.label }}</span>
                       <span class="isEdit">
                         <!-- 编辑状态 -->
@@ -107,18 +107,25 @@
                   </el-dropdown-menu>
                 </el-dropdown>
               </span>
-                      </span>
-                    </span>
-                      </el-tree>
-                      <i class="el-icon-plus"
-                      ><span @click="handleNewMoudle">新建模块</span></i
-                      >
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </div>
-          </vue-perfect-scrollbar>
+            </span>
+          </span>
+        </el-tree>
+
+
+          <b-button
+              variant="relief-primary " @click="handleNewMoudle"
+              v-ripple.400="'rgba(113, 102, 240, 0.15)'" pill
+              size="sm"
+              style="margin-left: 160px;margin-top: 20px;"
+          >
+          新建模块
+        </b-button>
+      </div>
+    </div>
+  </div>
+</template>
+</div>
+</vue-perfect-scrollbar>
         </div>
       </div>
     </div>
@@ -198,10 +205,10 @@ export default {
       maxScrollbarLength: 60,
     }
 
-    const {filter, pageOptions, treeData, totalRows,treeIcon} = useWebFiltersSuits()
+    const {filter, pageOptions, treeData, totalRows, treeIcon} = useWebFiltersSuits()
 
     const showCases = (suiteId) => {
-      bus.$emit("eventSuitId",suiteId)
+      bus.$emit("eventSuitId", suiteId)
     }
 
     const deleteSuits = param => {
@@ -211,29 +218,52 @@ export default {
       )
     }
 
-    const addSuits = data =>{
+    const addPartentSuit = data => {
       store.dispatch('web-test-suits/addSuits', {
         id: data.id,
-        label:data.label,
-        projectId:data.projectId,
-        parentId:data.parentId,
-        sort:1,
-        isLeaf:false,
+        name: data.label,
+        projectId: data.projectId,
+        parentId: data.parentId,
+        sort: null,
+        isLeaf: false,
+      }).then(response => {
+            fetchTestSuits()
+          }
+      )
+    }
+
+
+    const addSuits = data => {
+      store.dispatch('web-test-suits/addSuits', {
+        id: data.id,
+        name: data.label,
+        projectId: data.projectId,
+        parentId: data.parentId,
+        sort: 1,
+        isLeaf: false,
       }).then(response => {
             // fetchTestSuits()
           }
       )
     }
 
-    const editSuits = data =>{
+    const editSuits = data => {
       store.dispatch('web-test-suits/editSuits', {
         id: data.id,
-        label:data.label,
-        projectId:data.projectId,
-        parentId:data.parentId,
-          sort:1,
-        isLeaf:false,
-      }).then(response => {}
+        name: data.label,
+        projectId: data.projectId,
+        parentId: data.parentId,
+        sort: 1,
+        isLeaf: false,
+      }).then(response => {
+          }
+      )
+    }
+
+    const updateSuiteTree = data => {
+      store.dispatch('web-test-suits/updateSuiteTree', data).then(response => {
+
+          }
       )
     }
 
@@ -270,6 +300,8 @@ export default {
       deleteSuits,
       editSuits,
       addSuits,
+      updateSuiteTree,
+      addPartentSuit,
       showCases,
       treeIcon,
     }
@@ -336,12 +368,17 @@ export default {
 
     //新增一级目录模块点击事件
     handleNewMoudle() {
-      this.data.push({
-        id: id++,
-        label: "未命名模块",
+
+      const moudle = {
+        id: null,
+        label: "未命名模块" ,
+        parentId: null,
         children: [],
+        projectId:1,
         isEdit: true,
-      });
+      }
+
+      this.addPartentSuit(moudle);
     },
     //新增按钮
     append(node, data) {
@@ -353,11 +390,11 @@ export default {
       }
       //新定义一个对象
       const newChild = {
-        id: id++,
-        label: "未命名模块",
-        parentId:data.id,
+        id: null,
+        label: "未命名模块"+data.id,
+        parentId: data.id,
         children: [],
-        projectId:data.projectId,
+        projectId: data.projectId,
         isEdit: true,
       };
       if (!data.children) {
@@ -423,8 +460,31 @@ export default {
     handleDragEnd(draggingNode, dropNode, dropType, ev) {
       // console.log("tree drag end: ", dropNode && dropNode.label, dropType);
     },
-    handleDrop(draggingNode, dropNode, dropType, ev) {
-      // console.log("tree drop: ", dropNode.label, dropType);
+    // 拖拽事件 参数依次为：被拖拽节点对应的 Node、结束拖拽时最后进入的节点、被拖拽节点的放置位置（before、after、inner）、event
+    handleDrop: async function (draggingNode, dropNode, dropType, ev) {
+      var paramData = [];
+      // 当拖拽类型不为inner,说明只是同级或者跨级排序，只需要寻找目标节点的父ID，获取其对象以及所有的子节点，并为子节点设置当前对象的ID为父ID即可
+      // 当拖拽类型为inner，说明拖拽节点成为了目标节点的子节点，只需要获取目标节点对象即可
+      var data = dropType !== "inner" ? dropNode.parent.data : dropNode.data;
+      var nodeData = dropNode.level === 1 && dropType !== "inner" ? data : data.children;
+      // 设置父ID,当level为1说明在第一级，pid为空
+      nodeData.forEach(element => {
+        element.pid = dropNode.level === 1 ? "" : data.id;
+      });
+      nodeData.forEach((element, i) => {
+        var suite = {
+          id: element.id,
+          parentId: element.pid,
+          sort: i,
+          isLeaf: false,
+        };
+        paramData.push(suite);
+      });
+
+      this.loading = true;
+      // 得到这次操作需要变更的数据范围，请求后台批量处理即可...
+      console.log(paramData)
+      this.updateSuiteTree(paramData)
     },
     //拖拽点击事件
     allowDrop(draggingNode, dropNode, type) {

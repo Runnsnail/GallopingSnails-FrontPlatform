@@ -16,8 +16,35 @@
         lg="8"
         class="d-none d-lg-flex align-items-center p-5"
       >
+
+<!--        <div class="wrap" >-->
+<!--          <div class="cardl">-->
+<!--            <div class="rolebg">-->
+<!--              <img :src="rolebg" alt="">-->
+<!--            </div>-->
+<!--            <div class="role">-->
+<!--              <img :src="role" alt="">-->
+<!--            </div>-->
+<!--            <div class="content">-->
+<!--              <h1>GallopingSnail</h1>-->
+<!--              <p>一站式自动化平台 </p>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+        <blockquote class="blockquote pl-1 border-left-primary border-left-3">
+          <h2 class="mb-0">
+            一站式自动化平台
+          </h2>
+          <footer class="blockquote-footer" >
+            <h5>定时执行解决重复工作,兼容网页自动化，手机群控脚本操作，支持接口批量调用</h5>
+          </footer>
+        </blockquote>
+        <a href="#" target="_blank">
+          <img src="../../../assets/images/logo/logo.png" />
+        </a>
         <!--3D动态态首图-->
-        <iframe src='https://my.spline.design/untitled-b7290f9ce8ff48256ae71bf1bcff7654/' frameborder='0' width='100%' height='100%'></iframe>
+<!--        <iframe src='https://my.spline.design/untitled-b7290f9ce8ff48256ae71bf1bcff7654/' frameborder='0' width='100%' height='100%'></iframe>-->
 <!--静态首图-->
 <!--        <div class="w-100 d-lg-flex align-items-center justify-content-center px-5">-->
 <!--          <b-img-->
@@ -224,7 +251,7 @@ import { required, email } from '@validations'
 import { togglePasswordVisibility } from '@core/mixins/ui/forms'
 import store from '@/store/index'
 import {getHomeRouteForLoggedInUser, initMenu} from '@/auth/utils'
-
+import bg from '@/assets/images/login/bg.png'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
 export default {
@@ -257,7 +284,12 @@ export default {
       password: '123456',
       userEmail: '201507802@qq.com',
       sideImg: require('@/assets/images/pages/login-v2.svg'),
+      rolebg: require('@/assets/images/login/rolebg.png'),
+      role: require('@/assets/images/login/role.png'),
 
+      styles:{
+        background: `url(${bg}) no-repeat`
+      },
       // validation rules
       required,
       email,
@@ -271,7 +303,10 @@ export default {
       if (store.state.appConfig.layout.skin === 'dark') {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.sideImg = require('@/assets/images/pages/login-v2-dark.svg')
-        return this.sideImg
+        this.rolebg= require('@/assets/images/login/rolebg.png'),
+        this.role= require('@/assets/images/login/role.png')
+
+        return this.sideImg,this.rolebg,this.role
       }
       return this.sideImg
     },
@@ -323,4 +358,5 @@ export default {
 
 <style lang="scss">
 @import '/src/@core/scss/vue/pages/page-auth.scss';
+
 </style>

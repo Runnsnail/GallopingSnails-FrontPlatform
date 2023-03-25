@@ -184,12 +184,12 @@
     </b-button>
     <b-button
         variant="primary"
-        @click="$refs.fileInput.click()"
+        @click="$refs.fileInput.$el.click()"
     >
       Upload
     </b-button>
 
-    <b-img
+    <b-img v-show="tagetImageUrl !==null"
         thumbnail fluid
         :src="tagetImageUrl"
         @click="showImgViewer(tagetImageUrl)"
@@ -198,6 +198,7 @@
         v-if="imgViewerVisible"
         :on-close="closeImgViewer"
         :url-list="[tagetImageUrl]"/>
+
 
   </div>
 
@@ -302,6 +303,7 @@ export default {
       }).then(response => {
 
         tagetImageUrl.value = response.data.data;
+
         this.onSubmit()
 
       })
@@ -356,7 +358,7 @@ export default {
   methods: {
 
     clearFiles() {
-      this.$refs['file-input'].reset()
+      this.$refs['fileInput'].reset()
     },
 
     showImgViewer (param) {

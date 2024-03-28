@@ -37,9 +37,10 @@ Project utilization  项目使用情况:robot: ：
    项目同时继承了electron 编译，支持桌面打包，独立程序运行
 ![7c80e339-046a-461e-825c-7bc3520baf12](https://github.com/Runnsnail/GallopingSnails-FrontPlatform/assets/86088574/2d747cd2-56b1-486d-acbf-e0ad021512e6)
 ![27af830b-53b5-48d2-b9e2-fa0b67e928fb](https://github.com/Runnsnail/GallopingSnails-FrontPlatform/assets/86088574/cc995225-d6d2-4970-9c04-a939a71ae00e)
+![ee1c3943-c336-439c-83ae-cd487655f480](https://github.com/Runnsnail/GallopingSnails-FrontPlatform/assets/86088574/226c9efe-1dc5-48a1-bbe7-adf3e43c31cb)
 
     
-     ![7c80e339-046a-461e-825c-7bc3520baf12](https://github.com/Runnsnail/GallopingSnails-FrontPlatform/assets/86088574/3bf7ee30-5c7e-4bda-832d-715a79fd4b81)
+ 
 ![7bdb331d-dc90-47af-9685-5686ea79e4f2](https://github.com/Runnsnail/GallopingSnails-FrontPlatform/assets/86088574/fd365755-fcf4-4dd0-90eb-181615c37bc5)
 
 
